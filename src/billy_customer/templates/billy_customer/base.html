@@ -1,0 +1,15 @@
+{% extends 'shared/base.html' %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% block app_navigation %}
+    <nav class="container-fluid mt-2">
+        {% crispy search_form %}
+    </nav>
+{% endblock %}
+{% block app_content %}
+
+{% endblock %}
+{% endblock %}

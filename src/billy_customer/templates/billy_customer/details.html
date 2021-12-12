@@ -1,0 +1,34 @@
+{% extends 'billy_customer/base.html' %}
+
+{% load i18n %}
+
+{% block app_content %}
+<h2>{% trans 'Master data' %}</h2>
+<table class="table table-hover table-striped">
+    <tr>
+        <th>#</th>
+        <td>{{ customer.pk }}</th>
+    </tr>
+    <tr>
+        <th>Name</th>
+        <td>{{ customer.name }}</th>
+    </tr>
+</table>
+<h2>{% trans 'Addresses' %}</h2>
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>{% trans 'Address' %}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for address in customer.addresses.all %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ address }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
