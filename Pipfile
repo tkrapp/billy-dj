@@ -9,6 +9,8 @@ django-crispy-forms = "*"
 crispy-bootstrap5 = "*"
 django-htmx = "*"
 whitenoise = "*"
+django-model-utils = "*"
+django-bootstrap5 = "*"
 
 [dev-packages]
 black = "*"
