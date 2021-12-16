@@ -6,28 +6,36 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('billy_invoice', '0002_alter_invoice_options_alter_invoiceitem_options'),
+        ("billy_invoice", "0002_alter_invoice_options_alter_invoiceitem_options"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='invoice',
-            name='create_timestamp',
-            field=models.DateTimeField(auto_now_add=True, null=True, verbose_name='Create timestamp'),
+            model_name="invoice",
+            name="create_timestamp",
+            field=models.DateTimeField(
+                auto_now_add=True, null=True, verbose_name="Create timestamp"
+            ),
         ),
         migrations.AddField(
-            model_name='invoice',
-            name='update_timestamp',
-            field=models.DateTimeField(auto_now=True, null=True, verbose_name='Update timestamp'),
+            model_name="invoice",
+            name="update_timestamp",
+            field=models.DateTimeField(
+                auto_now=True, null=True, verbose_name="Update timestamp"
+            ),
         ),
         migrations.AddField(
-            model_name='invoiceitem',
-            name='create_timestamp',
-            field=models.DateTimeField(auto_now_add=True, null=True, verbose_name='Create timestamp'),
+            model_name="invoiceitem",
+            name="create_timestamp",
+            field=models.DateTimeField(
+                auto_now_add=True, null=True, verbose_name="Create timestamp"
+            ),
         ),
         migrations.AddField(
-            model_name='invoiceitem',
-            name='update_timestamp',
-            field=models.DateTimeField(auto_now=True, null=True, verbose_name='Update timestamp'),
+            model_name="invoiceitem",
+            name="update_timestamp",
+            field=models.DateTimeField(
+                auto_now=True, null=True, verbose_name="Update timestamp"
+            ),
         ),
     ]

@@ -5,6 +5,8 @@ from django.utils.translation import gettext, gettext_lazy
 
 from model_utils.models import TimeStampedModel
 
+from shared.models import HideableModel, HideableManager
+
 
 class Vendor(TimeStampedModel):
     name = models.CharField(
@@ -32,7 +34,7 @@ class Category(TimeStampedModel):
         verbose_name_plural = gettext_lazy("Categories")
 
 
-class Product(TimeStampedModel):
+class Product(HideableModel, TimeStampedModel):
     name = models.CharField(
         verbose_name=gettext_lazy("Name"), max_length=255, unique=True
     )
@@ -48,6 +50,8 @@ class Product(TimeStampedModel):
         verbose_name=gettext_lazy("Netto price (in Cents)")
     )
     details = models.JSONField(verbose_name=gettext_lazy("Details"))
+
+    objects = HideableManager()
 
     def __str__(self) -> str:
         return f"({self.vendor.name}) {self.name}"

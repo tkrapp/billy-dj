@@ -20,9 +20,16 @@ from django.shortcuts import redirect
 from django.urls import path
 from django.urls.base import reverse
 from django.urls.conf import include
+from django.utils.translation import gettext_lazy
+
+admin.site.site_header = gettext_lazy("Billy Administration")
+admin.site.site_title = gettext_lazy("Billy Administration Portal")
+admin.site.index_title = gettext_lazy("Welcome to Billy's Administration Portal")
+
 
 def redirect_to_start(request: HttpRequest) -> HttpResponse:
     return redirect(to=reverse(viewname="start:index"))
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),

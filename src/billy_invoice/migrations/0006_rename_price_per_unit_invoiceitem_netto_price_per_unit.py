@@ -6,13 +6,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('billy_invoice', '0005_alter_invoiceitem_price_per_unit'),
+        ("billy_invoice", "0005_alter_invoiceitem_price_per_unit"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='invoiceitem',
-            old_name='price_per_unit',
-            new_name='netto_price_per_unit',
+            model_name="invoiceitem",
+            old_name="price_per_unit",
+            new_name="netto_price_per_unit",
         ),
     ]

@@ -8,80 +8,115 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('billy_warehouse', '0006_category_create_timestamp_category_update_timestamp_and_more'),
+        (
+            "billy_warehouse",
+            "0006_category_create_timestamp_category_update_timestamp_and_more",
+        ),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='category',
-            name='create_timestamp',
+            model_name="category",
+            name="create_timestamp",
         ),
         migrations.RemoveField(
-            model_name='category',
-            name='update_timestamp',
+            model_name="category",
+            name="update_timestamp",
         ),
         migrations.RemoveField(
-            model_name='product',
-            name='create_timestamp',
+            model_name="product",
+            name="create_timestamp",
         ),
         migrations.RemoveField(
-            model_name='product',
-            name='update_timestamp',
+            model_name="product",
+            name="update_timestamp",
         ),
         migrations.RemoveField(
-            model_name='stock',
-            name='create_timestamp',
+            model_name="stock",
+            name="create_timestamp",
         ),
         migrations.RemoveField(
-            model_name='stock',
-            name='update_timestamp',
+            model_name="stock",
+            name="update_timestamp",
         ),
         migrations.RemoveField(
-            model_name='vendor',
-            name='create_timestamp',
+            model_name="vendor",
+            name="create_timestamp",
         ),
         migrations.RemoveField(
-            model_name='vendor',
-            name='update_timestamp',
+            model_name="vendor",
+            name="update_timestamp",
         ),
         migrations.AddField(
-            model_name='category',
-            name='created',
-            field=model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created'),
+            model_name="category",
+            name="created",
+            field=model_utils.fields.AutoCreatedField(
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
+            ),
         ),
         migrations.AddField(
-            model_name='category',
-            name='modified',
-            field=model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified'),
+            model_name="category",
+            name="modified",
+            field=model_utils.fields.AutoLastModifiedField(
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
+            ),
         ),
         migrations.AddField(
-            model_name='product',
-            name='created',
-            field=model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created'),
+            model_name="product",
+            name="created",
+            field=model_utils.fields.AutoCreatedField(
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
+            ),
         ),
         migrations.AddField(
-            model_name='product',
-            name='modified',
-            field=model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified'),
+            model_name="product",
+            name="modified",
+            field=model_utils.fields.AutoLastModifiedField(
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
+            ),
         ),
         migrations.AddField(
-            model_name='stock',
-            name='created',
-            field=model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created'),
+            model_name="stock",
+            name="created",
+            field=model_utils.fields.AutoCreatedField(
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
+            ),
         ),
         migrations.AddField(
-            model_name='stock',
-            name='modified',
-            field=model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified'),
+            model_name="stock",
+            name="modified",
+            field=model_utils.fields.AutoLastModifiedField(
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
+            ),
         ),
         migrations.AddField(
-            model_name='vendor',
-            name='created',
-            field=model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created'),
+            model_name="vendor",
+            name="created",
+            field=model_utils.fields.AutoCreatedField(
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
+            ),
         ),
         migrations.AddField(
-            model_name='vendor',
-            name='modified',
-            field=model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified'),
+            model_name="vendor",
+            name="modified",
+            field=model_utils.fields.AutoLastModifiedField(
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
+            ),
         ),
     ]

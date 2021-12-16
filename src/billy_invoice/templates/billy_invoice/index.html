@@ -1,5 +1,23 @@
 {% extends 'shared/base.html' %}
 
+{% load i18n %}
+{% load bs_icons %}
+
 {% block content %}
-Content
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <h1>{% trans 'Invoices' %}</h1>
+        <button class="btn btn-sm btn-outline-success">
+            {% bsicon 'plus-lg' %}
+            {% trans 'New invoice' %}
+        </button>
+    </div>
+    <div class="list-group">
+    {% for invoice in invoices %}
+        <div class="list-group-item">
+            {{ invoice }}
+        </div>
+    {% endfor %}
+    </div>
+</div>
 {% endblock %}

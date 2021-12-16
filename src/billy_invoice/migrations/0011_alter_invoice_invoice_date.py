@@ -7,13 +7,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('billy_invoice', '0010_alter_invoice_invoice_date'),
+        ("billy_invoice", "0010_alter_invoice_invoice_date"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='invoice',
-            name='invoice_date',
-            field=models.DateField(default=billy_invoice.models.today, verbose_name='Invoice date'),
+            model_name="invoice",
+            name="invoice_date",
+            field=models.DateField(
+                default=billy_invoice.models.today, verbose_name="Invoice date"
+            ),
         ),
     ]

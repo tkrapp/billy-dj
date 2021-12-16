@@ -7,27 +7,59 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Address',
+            name="Address",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('address_1', models.CharField(max_length=100, verbose_name='Address 1')),
-                ('address_2', models.CharField(max_length=100, verbose_name='Address 2')),
-                ('address_3', models.CharField(max_length=100, verbose_name='Address 3')),
-                ('city', models.CharField(max_length=100, verbose_name='City')),
-                ('postal_code', models.CharField(max_length=5, verbose_name='Postal code')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "address_1",
+                    models.CharField(max_length=100, verbose_name="Address 1"),
+                ),
+                (
+                    "address_2",
+                    models.CharField(max_length=100, verbose_name="Address 2"),
+                ),
+                (
+                    "address_3",
+                    models.CharField(max_length=100, verbose_name="Address 3"),
+                ),
+                ("city", models.CharField(max_length=100, verbose_name="City")),
+                (
+                    "postal_code",
+                    models.CharField(max_length=5, verbose_name="Postal code"),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Customer',
+            name="Customer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255, verbose_name='Name')),
-                ('addresses', models.ManyToManyField(to='billy_customer.Address', verbose_name='Address')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255, verbose_name="Name")),
+                (
+                    "addresses",
+                    models.ManyToManyField(
+                        to="billy_customer.Address", verbose_name="Address"
+                    ),
+                ),
             ],
         ),
     ]

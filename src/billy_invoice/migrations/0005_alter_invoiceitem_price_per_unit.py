@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('billy_invoice', '0004_remove_invoice_create_timestamp_and_more'),
+        ("billy_invoice", "0004_remove_invoice_create_timestamp_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='invoiceitem',
-            name='price_per_unit',
-            field=models.PositiveBigIntegerField(verbose_name='Price per unit (in Cents)'),
+            model_name="invoiceitem",
+            name="price_per_unit",
+            field=models.PositiveBigIntegerField(
+                verbose_name="Price per unit (in Cents)"
+            ),
         ),
     ]

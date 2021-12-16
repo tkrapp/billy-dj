@@ -8,44 +8,63 @@ import model_utils.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('billy_invoice', '0003_invoice_create_timestamp_invoice_update_timestamp_and_more'),
+        (
+            "billy_invoice",
+            "0003_invoice_create_timestamp_invoice_update_timestamp_and_more",
+        ),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='invoice',
-            name='create_timestamp',
+            model_name="invoice",
+            name="create_timestamp",
         ),
         migrations.RemoveField(
-            model_name='invoice',
-            name='update_timestamp',
+            model_name="invoice",
+            name="update_timestamp",
         ),
         migrations.RemoveField(
-            model_name='invoiceitem',
-            name='create_timestamp',
+            model_name="invoiceitem",
+            name="create_timestamp",
         ),
         migrations.RemoveField(
-            model_name='invoiceitem',
-            name='update_timestamp',
+            model_name="invoiceitem",
+            name="update_timestamp",
         ),
         migrations.AddField(
-            model_name='invoice',
-            name='created',
-            field=model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created'),
+            model_name="invoice",
+            name="created",
+            field=model_utils.fields.AutoCreatedField(
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
+            ),
         ),
         migrations.AddField(
-            model_name='invoice',
-            name='modified',
-            field=model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified'),
+            model_name="invoice",
+            name="modified",
+            field=model_utils.fields.AutoLastModifiedField(
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
+            ),
         ),
         migrations.AddField(
-            model_name='invoiceitem',
-            name='created',
-            field=model_utils.fields.AutoCreatedField(default=django.utils.timezone.now, editable=False, verbose_name='created'),
+            model_name="invoiceitem",
+            name="created",
+            field=model_utils.fields.AutoCreatedField(
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="created",
+            ),
         ),
         migrations.AddField(
-            model_name='invoiceitem',
-            name='modified',
-            field=model_utils.fields.AutoLastModifiedField(default=django.utils.timezone.now, editable=False, verbose_name='modified'),
+            model_name="invoiceitem",
+            name="modified",
+            field=model_utils.fields.AutoLastModifiedField(
+                default=django.utils.timezone.now,
+                editable=False,
+                verbose_name="modified",
+            ),
         ),
     ]

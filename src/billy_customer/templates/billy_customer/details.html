@@ -1,34 +1,151 @@
 {% extends 'billy_customer/base.html' %}
 
+{% load static %}
 {% load i18n %}
+{% load bs_icons %}
+
+{% block app_javascript %}
+<script type="module" src="{% static 'billy_customer/details.js' %}"></script>
+{% endblock %}
 
 {% block app_content %}
-<h2>{% trans 'Master data' %}</h2>
-<table class="table table-hover table-striped">
-    <tr>
-        <th>#</th>
-        <td>{{ customer.pk }}</th>
-    </tr>
-    <tr>
-        <th>Name</th>
-        <td>{{ customer.name }}</th>
-    </tr>
-</table>
-<h2>{% trans 'Addresses' %}</h2>
-<table class="table table-hover table-striped">
-    <thead>
+<div class="container-fluid">
+    <div class="d-flex">
+        <h2 class="flex-grow-1">{% trans 'Customer data' %}</h2>
+        <div class="flex-shrink-0">
+            <button type="button" class="btn btn-primary btn-sm"
+                hx-get="{% url 'billy_customer:edit-customer-data' customer.pk %}"
+                hx-target="#edit-customer-data-modal-content"
+                hx-trigger="click">
+                {% bsicon 'pencil' %}
+                {% trans 'Change' %}
+            </button>
+        </div>
+    </div>
+    <table class="table table-striped">
         <tr>
-            <th>#</th>
-            <th>{% trans 'Address' %}</th>
+            <th>{% trans 'Customer ID' %}</th>
+            <td>{{ customer.pk }}</th>
         </tr>
-    </thead>
-    <tbody>
-    {% for address in customer.addresses.all %}
         <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ address }}</td>
+            <th>{% trans 'Last name' %}</th>
+            <td>{{ customer.last_name }}</th>
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        <tr>
+            <th>{% trans 'First name' %}</th>
+            <td>{{ customer.first_name }}</th>
+        </tr>
+    </table>
+    <div class="pt-3 d-flex">
+        <h2 class="flex-grow-1">{% trans 'Addresses' %}</h2>
+        <div class="flex-shrink-0">
+            <button type="button" class="btn btn-primary btn-sm"
+                hx-get="{% url 'billy_customer:add-address' customer.pk %}"
+                hx-target="#edit-address-modal-content"
+                hx-trigger="click">
+                {% bsicon 'plus-lg' %}
+                {% trans 'Add' %}
+            </button>
+        </div>
+    </div>
+    {% include 'billy_customer/details_customer_addresses.html' %}
+</div>
+{% endblock %}
+
+{% block modals %}
+<div id="edit-address-modal" class="modal fade" tabindex="-1" aria-labelledby="edit-address-title" aria-hidden="true" data-bs-focus="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit-address-title">{% trans 'Edit address data' %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
+            </div>
+            <div
+                class="modal-body"
+                id="edit-address-modal-content">
+            </div>
+            <div class="modal-footer">
+                <button
+                    type="submit"
+                    class="btn btn-primary btn-sm"
+                    form="add-edit-address">
+                    {% bsicon 'check-lg' %}
+                    {% trans 'Save' %}
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-secondary btn-sm"
+                    data-bs-dismiss="modal">
+                    {% bsicon 'x-lg' %}
+                    {% trans 'Close' %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+(function () {
+    document.querySelector("#edit-address-modal").addEventListener(
+        "htmx:afterSwap",
+        function (evt) {
+            billyShared.showModal(`#${this.id}`);
+        }
+    );
+
+    document.querySelector("#edit-address-modal-content").addEventListener(
+        "htmx:afterOnLoad",
+        function (evt) {
+            if (evt.detail && !this.contains(evt.detail.target)) {
+                billyShared.hideModal(`#${billyShared.closest(this, ".modal").id}`);
+            }
+        }
+    );
+}());
+</script>
+<div id="edit-customer-data-modal" class="modal fade" tabindex="-1" aria-labelledby="edit-customer-data-title">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit-customer-data-title">{% trans 'Edit customer data' %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
+            </div>
+            <div class="modal-body" id="edit-customer-data-modal-content"></div>
+            <div class="modal-footer">
+                <button
+                    type="submit"
+                    class="btn btn-primary btn-sm"
+                    form="edit-customer-data">
+                    {% bsicon 'check-lg' %}
+                    {% trans 'Save' %}
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-secondary btn-sm"
+                    data-bs-dismiss="modal">
+                    {% bsicon 'x-lg' %}
+                    {% trans 'Close' %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+(function () {
+    document.querySelector("#edit-customer-data-modal").addEventListener(
+        "htmx:afterSwap",
+        function (evt) {
+            billyShared.showModal(`#${this.id}`);
+        }
+    );
+
+    document.querySelector("#edit-customer-data-modal-content").addEventListener(
+        "htmx:afterOnLoad",
+        function (evt) {
+            if (evt.detail && !this.contains(evt.detail.target)) {
+                billyShared.hideModal(`#${billyShared.closest(this, ".modal").id}`);
+            }
+        }
+    );
+}());
+</script>
 {% endblock %}

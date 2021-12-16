@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('billy_warehouse', '0007_remove_category_create_timestamp_and_more'),
+        ("billy_warehouse", "0007_remove_category_create_timestamp_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='price',
-            field=models.PositiveBigIntegerField(verbose_name='Price (in Cents)'),
+            model_name="product",
+            name="price",
+            field=models.PositiveBigIntegerField(verbose_name="Price (in Cents)"),
         ),
     ]

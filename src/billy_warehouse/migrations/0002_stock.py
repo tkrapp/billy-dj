@@ -7,16 +7,31 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('billy_warehouse', '0001_initial'),
+        ("billy_warehouse", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Stock',
+            name="Stock",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('quantity', models.PositiveSmallIntegerField(verbose_name='Quantity')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='billy_warehouse.product', verbose_name='Product')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("quantity", models.PositiveSmallIntegerField(verbose_name="Quantity")),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.RESTRICT,
+                        to="billy_warehouse.product",
+                        verbose_name="Product",
+                    ),
+                ),
             ],
         ),
     ]

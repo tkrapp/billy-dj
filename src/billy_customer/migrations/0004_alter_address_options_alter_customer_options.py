@@ -6,16 +6,16 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('billy_customer', '0003_alter_address_options'),
+        ("billy_customer", "0003_alter_address_options"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='address',
-            options={'verbose_name': 'Address', 'verbose_name_plural': 'Addresses'},
+            name="address",
+            options={"verbose_name": "Address", "verbose_name_plural": "Addresses"},
         ),
         migrations.AlterModelOptions(
-            name='customer',
-            options={'verbose_name': 'Customer', 'verbose_name_plural': 'Customers'},
+            name="customer",
+            options={"verbose_name": "Customer", "verbose_name_plural": "Customers"},
         ),
     ]

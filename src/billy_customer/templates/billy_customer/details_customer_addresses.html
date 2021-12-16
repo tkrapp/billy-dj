@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<div class="list-group mb-3" id="address-list">
+{% for address in customer_addresses %}
+    <div class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+            <h3 class="mb-1">{{ address.address_1 }}</h3>
+            <small>#{{ forloop.counter }}</small>
+        </div>
+        {% if address.address_2 %}<p class="mb-0">{{ address.address_2 }}</p>{% endif %}
+        {% if address.address_3 %}<p class="mb-0">{{ address.address_3 }}</p>{% endif %}
+        <p class="mb-0">{{ address.postal_code }} {{ address.city }}</p>
+        <small>{% blocktranslate with since=address.created|timesince %}
+            Created {{ since }} ago
+        {% endblocktranslate %}</small>
+    </div>
+{% empty %}
+    <div class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+            <div>{% trans 'There are no addresses, yet' %}</div>
+        </div>
+    </div>
+{% endfor %}
+</div>
