@@ -1,0 +1,17 @@
+{% extends 'registration/base.html' %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load bs_icons %}
+
+{% block content %}
+{% block app_content %}
+<div class="container-fluid mb-3 mt-3">
+{% url 'login' as login_url %}
+{% blocktrans %}
+    Thank you for using Billy!<br />
+    Want to <a href="{{ login_url }}">log in</a> again?
+{% endblocktrans%}
+</div>
+{% endblock %}
+{% endblock %}

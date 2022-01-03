@@ -1,7 +1,11 @@
 from decimal import Decimal
 from typing import Optional
+
 from django.contrib import admin
+from django.db import models as django_models
 from django.utils.translation import gettext_lazy
+
+from shared.admin import PrettyJSONWidget
 
 from . import models
 
@@ -14,12 +18,15 @@ class VendorAdmin(admin.ModelAdmin):
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ["name", "category", "vendor", "netto_price_in_euro", "details"]
-    readonly_fields = ["created", "modified", "netto_price_in_euro"]
-
-    @admin.display(description=gettext_lazy("Price in EUR"))
-    def netto_price_in_euro(self, obj: models.Product) -> Optional[Decimal]:
-        return obj.netto_price_in_euro
+    list_display = [
+        "name",
+        "category",
+        "vendor",
+        "netto_price",
+        "details",
+        "hidden",
+    ]
+    readonly_fields = ["created", "modified"]
 
 
 @admin.register(models.Stock)
@@ -32,3 +39,4 @@ class StockAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ["name"]
     readonly_fields = ["created", "modified"]
+    formfield_overrides = {django_models.JSONField: {"widget": PrettyJSONWidget}}

@@ -11,6 +11,8 @@ django-htmx = "*"
 whitenoise = "*"
 django-model-utils = "*"
 django-bootstrap5 = "*"
+marisa-trie = "*"
+django-zero-settings = "*"
 
 [dev-packages]
 black = "*"

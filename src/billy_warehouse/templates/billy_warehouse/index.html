@@ -1,5 +1,9 @@
-{% extends 'shared/base.html' %}
+{% extends 'billy_warehouse/base.html' %}
 
-{% block content %}
-Content
+{% load i18n %}
+{% load bs_icons %}
+
+
+{% block app_content %}
+{% include 'billy_warehouse/products_list.html' %}
 {% endblock %}

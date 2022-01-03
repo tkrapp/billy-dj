@@ -21,6 +21,7 @@ from django.urls import path
 from django.urls.base import reverse
 from django.urls.conf import include
 from django.utils.translation import gettext_lazy
+from django.contrib.auth import urls
 
 admin.site.site_header = gettext_lazy("Billy Administration")
 admin.site.site_title = gettext_lazy("Billy Administration Portal")
@@ -32,10 +33,12 @@ def redirect_to_start(request: HttpRequest) -> HttpResponse:
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path("", redirect_to_start),
     path("start/", include("start.urls")),
     path("customers/", include("billy_customer.urls")),
     path("warehouse/", include("billy_warehouse.urls")),
     path("invoices/", include("billy_invoice.urls")),
+    path("shared/", include("shared.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("admin/", admin.site.urls),
 ]

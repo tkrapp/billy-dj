@@ -1,5 +1,14 @@
 {% extends 'shared/base.html' %}
 
+{% load i18n %}
+
 {% block content %}
-Content
+<div class="container-fluid mt-1">
+    <p>
+        {% trans 'Hello' %}
+        {% if request.user.is_authenticated %}{{ request.user.first_name }} {{ request.user.last_name }}!
+        {% else %}{% trans 'Stranger' %}!{% endif %}<br />
+        {% blocktrans %}Welcome to Billy, your next generation billing system.{% endblocktrans %}
+    </p>
+</div>
 {% endblock %}

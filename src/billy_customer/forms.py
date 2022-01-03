@@ -1,6 +1,6 @@
 from typing import Optional
 
-from crispy_forms.bootstrap import StrictButton
+from crispy_forms.bootstrap import StrictButton, FieldWithButtons
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import ButtonHolder, Div, Field, Layout, Row
 from django import forms
@@ -8,13 +8,14 @@ from django.core.exceptions import ValidationError
 from django.urls.base import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy
+from shared.forms import SearchInput
 from shared.helpers.bs_icons import bsicon
 
 from .models import Address, Customer
 
 
 class SearchForm(forms.Form):
-    q = forms.CharField(label=gettext_lazy("Search text"))
+    q = forms.CharField(label=gettext_lazy("Search text"), widget=SearchInput)
 
     def __init__(self, *args, add_url: str, **kwargs):
         super().__init__(*args, **kwargs)
@@ -25,23 +26,27 @@ class SearchForm(forms.Form):
         self.helper.form_action = reverse("billy_customer:index")
         self.helper.layout = Layout(
             Div(
-                Field(
-                    "q",
-                    placeholder="Kundenname",
-                    css_class="form-control-sm",
-                    wrapper_class="flex-fill me-2",
-                ),
-                ButtonHolder(
+                FieldWithButtons(
+                    Field(
+                        "q",
+                        placeholder=gettext_lazy("Customer name"),
+                        css_class="form-control-sm",
+                    ),
                     StrictButton(
                         mark_safe(bsicon("search")),
                         css_class="btn btn-primary btn-sm",
                         type="submit",
                         aria_label=gettext_lazy("Search"),
+                        title=gettext_lazy("Search"),
                     ),
+                    css_class="me-2 flex-fill",
+                ),
+                ButtonHolder(
                     StrictButton(
                         mark_safe(bsicon("plus-lg")),
                         css_class="btn btn-success btn-sm",
                         aria_label=gettext_lazy("Add"),
+                        title=gettext_lazy("Add new customer"),
                         **{
                             "hx-get": add_url,
                             "hx-target": "#add-edit-user-modal-content",
@@ -112,6 +117,7 @@ class AddressForm(forms.ModelForm):
                     "postal_code",
                     css_class="form-control-sm",
                     wrapper_class="col col-sm-4",
+                    autocomplete="off",
                 ),
                 Field(
                     "city",

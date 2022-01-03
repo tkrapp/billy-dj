@@ -49,7 +49,7 @@ THIRD_PARTY_APPS = [
 CUSTOM_APPS = ["billy_warehouse", "billy_invoice", "billy_customer", "shared", "start"]
 
 
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
+INSTALLED_APPS = CUSTOM_APPS + DJANGO_APPS + THIRD_PARTY_APPS
 
 
 MIDDLEWARE = [
@@ -152,3 +152,7 @@ BOOTSTRAP5 = {
         "crossorigin": "anonymous",
     }
 }
+
+
+# Login and logout
+LOGIN_REDIRECT_URL = "start:index"

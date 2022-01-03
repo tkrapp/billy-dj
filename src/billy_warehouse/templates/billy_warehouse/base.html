@@ -1,0 +1,61 @@
+{% extends 'shared/base.html' %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load bs_icons %}
+{% load static %}
+
+{% block content %}
+{% block app_navigation %}
+    <nav class="container-fluid mt-2">
+        {% crispy search_form %}
+    </nav>
+{% endblock %}
+{% block app_content %}
+
+{% endblock %}
+{% endblock %}
+
+{% block app_javascript %}
+<script type="module" src="{% static 'billy_warehouse/default.js' %}"></script>
+{% endblock %}
+
+{% block app_modals %}
+<div id="add-edit-product-modal" class="modal fade" tabindex="-1" aria-labelledby="add-edit-title" aria-hidden="true" data-bs-focus="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="add-edit-title" class="modal-title">{% trans 'Add or edit a Product' %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
+            </div>
+            <div class="modal-body" id="add-edit-product-modal-content"></div>
+            <div class="modal-footer">
+                <button
+                    type="submit"
+                    class="btn btn-primary btn-sm"
+                    form="add-edit-product">
+                    {% bsicon 'check-lg' %}
+                    {% trans 'Save' %}
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-secondary btn-sm"
+                    data-bs-dismiss="modal">
+                    {% bsicon 'x-lg' %}
+                    {% trans 'Close' %}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+(function () {
+    document.querySelector("#add-edit-product-modal").addEventListener(
+        "htmx:afterSwap",
+        function (evt) {
+            billyShared.showModal(`#${this.id}`);
+        }
+    );
+}());
+</script>
+{% endblock %}

@@ -85,6 +85,25 @@
 </div>
 <script type="text/javascript">
 (function () {
+    const POSTAL_CODE_AUTOCOMPLETE_URL = "{% url 'shared:search-postal-code' %}";
+    const KEYCODE_ENTER = 13;
+    const ATTR_CITY = "data-city";
+    const POSTAL_CODE_DELIMITER = ", ";
+
+    function generate_postal_code_entries(data) {
+        let options = [];
+
+        for ([postalCode, city] of data) {
+            let option = document.createElement("option")
+
+            option.value = `${postalCode}${POSTAL_CODE_DELIMITER}${city}`;
+
+            options.push(option);
+        }
+
+        return options;
+    }
+
     document.querySelector("#edit-address-modal").addEventListener(
         "htmx:afterSwap",
         function (evt) {
@@ -98,6 +117,77 @@
             if (evt.detail && !this.contains(evt.detail.target)) {
                 billyShared.hideModal(`#${billyShared.closest(this, ".modal").id}`);
             }
+        }
+    );
+
+    document.querySelector("#edit-address-modal").addEventListener(
+        "htmx:afterSwap",
+        function (evt) {
+            let form = this.querySelector("form");
+            let postalCodeInput = form.postal_code;
+            let postalCodeList = document.createElement("datalist");
+            let postalCodeListId = `${postalCodeInput.id}-list`;
+            let cityInput = form.city;
+            let previousPostalCodeList = this.querySelector(`#${postalCodeListId}`);
+            let maxLength = postalCodeInput.getAttribute("maxlength");
+
+            postalCodeList.id = postalCodeListId;
+            postalCodeInput.setAttribute("list", postalCodeListId);
+            postalCodeInput.removeAttribute("maxlength");
+
+            if (previousPostalCodeList) {
+                previousPostalCodeList.replaceWith(postalCodeList);
+            } else {
+                this.append(postalCodeList);
+            }
+
+            function trimToMaxLength(evt) {
+                if (
+                    evt.type === "input"
+                    && evt instanceof InputEvent
+                    && evt.inputType !== "insertReplacementText"
+                ) {
+                    if (this.value.length > maxLength) {
+                        this.value = this.value.slice(0, maxLength);
+                    }
+                }
+            }
+
+            function updateCityInput(evt) {
+                if (
+                    evt.inputType === "insertReplacementText"
+                    || (
+                        evt.type === "input"
+                        && !(evt instanceof InputEvent)
+                    )
+                ) {
+                    let [postalCode, city] = this.value.split(POSTAL_CODE_DELIMITER);
+
+                    this.value = postalCode;
+                    cityInput.value = city;
+                    cityInput.focus();
+                }
+            }
+
+            postalCodeInput.addEventListener(
+                "input",
+                async function (evt) {
+                    let searchParams = new URLSearchParams()
+
+                    searchParams.set("q", this.value.split(POSTAL_CODE_DELIMITER)[0]);
+                    searchParams.set("limit", 20);
+                    response = await fetch(`${POSTAL_CODE_AUTOCOMPLETE_URL}?${searchParams}`);
+
+                    if (response.ok) {
+                        data = await response.json();
+
+                        postalCodeList.innerHTML = "";
+                        postalCodeList.append(...generate_postal_code_entries(data.result));
+                    }
+                }
+            );
+            postalCodeInput.addEventListener("input", updateCityInput);
+            postalCodeInput.addEventListener("input", trimToMaxLength);
         }
     );
 }());
