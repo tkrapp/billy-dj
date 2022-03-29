@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+from os import environ
 from pathlib import Path
+
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-!%*g^hcr202s!@*316x=^hrj=scb9*(*$8gp=vz)56sz*#r16m"
+if secret_key := environ.get("BILLY_SECRET_KEY"):
+    SECRET_KEY = secret_key
+else:
+    raise ImproperlyConfigured("Environment variable 'BILLY_SECRET_KEY' is not set or empty")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
