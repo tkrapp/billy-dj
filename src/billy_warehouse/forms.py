@@ -1,16 +1,35 @@
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, Optional, Type
+
 from crispy_forms.bootstrap import FieldWithButtons, StrictButton
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import ButtonHolder, Div, Field, Layout, HTML
+from crispy_forms.layout import HTML, ButtonHolder, Div, Field, Layout
 from django import forms
 from django.urls.base import reverse_lazy
+from django.utils import module_loading
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy
 from shared.forms import SearchInput
-
 from shared.helpers.bs_icons import bsicon
 
 from .models import Product
+
+
+def load_details_form(form_class_path: Optional[str]) -> Type[forms.Form]:
+    if form_class_path is None:
+        return DefaultDetailsForm
+    return module_loading.import_string(form_class_path)
+
+
+class DefaultDetailsForm(forms.Form):
+    description = forms.CharField(
+        label=gettext_lazy("Description"), widget=forms.Textarea
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
 
 
 class ProductForm(forms.ModelForm):
@@ -59,7 +78,11 @@ class ProductForm(forms.ModelForm):
                 css_class="d-flex",
             ),
             Div(
-                Field("name", css_class="form-control-sm"),
+                Field(
+                    "name",
+                    css_class="form-control-sm",
+                    data_default_label=gettext_lazy("Name"),
+                ),
                 Field("netto_price", css_class="form-control-sm"),
             ),
             Div(*product_details_params, css_id=product_details_id),

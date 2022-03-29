@@ -1,0 +1,499 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-29 01:08+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/billy_customer/apps.py:8 src/billy_customer/models.py:79
+#: src/billy_customer/models.py:85 src/billy_invoice/models.py:27
+#: src/billy_invoice/templates/billy_invoice/cart.html:14
+msgid "Customer"
+msgstr "Kunde"
+
+#: src/billy_customer/forms.py:19 src/billy_warehouse/forms.py:102
+msgid "Search text"
+msgstr "Suchtext"
+
+#: src/billy_customer/forms.py:40
+msgid "Customer name"
+msgstr "Kundenname"
+
+#: src/billy_customer/forms.py:57 src/billy_customer/forms.py:58
+#: src/billy_warehouse/forms.py:139 src/billy_warehouse/forms.py:140
+msgid "Search"
+msgstr "Suche"
+
+#: src/billy_customer/forms.py:66
+#: src/billy_customer/templates/billy_customer/details.html:47
+#: src/billy_warehouse/forms.py:148
+#: src/billy_warehouse/templates/billy_warehouse/base.html:98
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: src/billy_customer/forms.py:67
+msgid "Add new customer"
+msgstr "Neuen Kunden hinzugfügen"
+
+#: src/billy_customer/forms.py:169
+msgid "Postal code must have a length of five characters"
+msgstr "Die Postleitzahl muss eine Länge von fünf Zeichen haben"
+
+#: src/billy_customer/forms.py:176
+msgid "Postal code must contain only decimal digits"
+msgstr "Die Postleitzahl darf nur aus Ziffern bestehen"
+
+#: src/billy_customer/models.py:11
+msgid "Address 1"
+msgstr "Adresse 1 (z.B. Straße, Hausnr.)"
+
+#: src/billy_customer/models.py:13
+msgid "Address 2"
+msgstr "Adresse 2"
+
+#: src/billy_customer/models.py:16
+msgid "Address 3"
+msgstr "Adresse 3"
+
+#: src/billy_customer/models.py:18
+msgid "City"
+msgstr "Stadt"
+
+#: src/billy_customer/models.py:20
+msgid "Postal code"
+msgstr "Postleitzahl"
+
+#: src/billy_customer/models.py:32 src/billy_customer/models.py:51
+#: src/billy_customer/models.py:88 src/billy_invoice/models.py:32
+msgid "Address"
+msgstr "Adresse"
+
+#: src/billy_customer/models.py:33
+#: src/billy_customer/templates/billy_customer/details.html:40
+msgid "Addresses"
+msgstr "Adressen"
+
+#: src/billy_customer/models.py:44
+#: src/billy_customer/templates/billy_customer/details.html:27
+msgid "Customer number"
+msgstr "Kundennummer"
+
+#: src/billy_customer/models.py:47
+#: src/billy_customer/templates/billy_customer/details.html:35
+msgid "First name"
+msgstr "Vorname"
+
+#: src/billy_customer/models.py:49
+#: src/billy_customer/templates/billy_customer/details.html:31
+msgid "Last name"
+msgstr "Nachname"
+
+#: src/billy_customer/models.py:80
+#: src/billy_customer/templates/billy_customer/base.html:7
+#: src/shared/templates/shared/base.html:50
+msgid "Customers"
+msgstr "Kunden"
+
+#: src/billy_customer/templates/billy_customer/base.html:25
+msgid "Add customer"
+msgstr "Kunde hinzufügen"
+
+#: src/billy_customer/templates/billy_customer/base.html:26
+#: src/billy_customer/templates/billy_customer/base.html:42
+#: src/billy_customer/templates/billy_customer/details.html:61
+#: src/billy_customer/templates/billy_customer/details.html:80
+#: src/billy_customer/templates/billy_customer/details.html:200
+#: src/billy_customer/templates/billy_customer/details.html:216
+#: src/billy_warehouse/templates/billy_warehouse/base.html:31
+#: src/billy_warehouse/templates/billy_warehouse/base.html:47
+#: src/billy_warehouse/templates/billy_warehouse/base.html:90
+#: src/billy_warehouse/templates/billy_warehouse/base.html:105
+msgid "Close"
+msgstr "Schließen"
+
+#: src/billy_customer/templates/billy_customer/base.html:35
+#: src/billy_customer/templates/billy_customer/details.html:73
+#: src/billy_customer/templates/billy_customer/details.html:209
+#: src/billy_warehouse/templates/billy_warehouse/base.html:40
+msgid "Save"
+msgstr "Sichern"
+
+#: src/billy_customer/templates/billy_customer/customers_list.html:18
+msgid "No customers to show"
+msgstr "Keine Kunden zu zeigen"
+
+#: src/billy_customer/templates/billy_customer/customers_list.html:24
+#: src/billy_customer/templates/billy_customer/customers_list.html:25
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:48
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:49
+msgid "Go to first page"
+msgstr "Zur ersten Seite springen"
+
+#: src/billy_customer/templates/billy_customer/customers_list.html:39
+#: src/billy_customer/templates/billy_customer/customers_list.html:40
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:63
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:64
+msgid "Go to previous page"
+msgstr "Zur vorherigen Seite springen"
+
+#: src/billy_customer/templates/billy_customer/customers_list.html:54
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:78
+#, python-format
+msgid ""
+"\n"
+"            Showing page %(current_page_number)s of %(num_pages)s.\n"
+"        "
+msgstr ""
+"\n"
+"            Zeige Seite %(current_page_number)s of %(num_pages)s.\n"
+"        "
+
+#: src/billy_customer/templates/billy_customer/customers_list.html:61
+#: src/billy_customer/templates/billy_customer/customers_list.html:62
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:85
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:86
+msgid "Go to next page"
+msgstr "Zur nächsten Seite springen"
+
+#: src/billy_customer/templates/billy_customer/customers_list.html:76
+#: src/billy_customer/templates/billy_customer/customers_list.html:77
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:100
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:101
+msgid "Go to last page"
+msgstr "Zur letzten Seite springen"
+
+#: src/billy_customer/templates/billy_customer/details.html:14
+msgid "Customer data"
+msgstr "Kundendaten"
+
+#: src/billy_customer/templates/billy_customer/details.html:21
+msgid "Change"
+msgstr "Ändern"
+
+#: src/billy_customer/templates/billy_customer/details.html:60
+msgid "Edit address data"
+msgstr "Adresse ändern"
+
+#: src/billy_customer/templates/billy_customer/details.html:199
+msgid "Edit customer data"
+msgstr "Kundendaten ändern"
+
+#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:14
+#, python-format
+msgid ""
+"\n"
+"                Created %(since)s ago\n"
+"            "
+msgstr ""
+"\n"
+"                Vor %(since)s erstellt\n"
+"            "
+
+#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:22
+msgid "Use in invoice"
+msgstr "In Rechnung benutzen"
+
+#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:30
+msgid "There are no addresses, yet"
+msgstr "Hier gibt es bisher keine Adressen"
+
+#: src/billy_invoice/apps.py:8 src/billy_invoice/models.py:37
+#: src/billy_invoice/models.py:43
+msgid "Invoice"
+msgstr "Rechnung"
+
+#: src/billy_invoice/forms.py:26
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:36
+msgid "Netto price"
+msgstr "Nettopreis"
+
+#: src/billy_invoice/forms.py:38
+msgid "Brutto price"
+msgstr "Bruttopreis"
+
+#: src/billy_invoice/forms.py:45 src/billy_invoice/models.py:50
+#: src/billy_warehouse/models.py:155
+msgid "Quantity"
+msgstr "Anzahl"
+
+#: src/billy_invoice/models.py:20
+msgid "Invoice number"
+msgstr "Rechnungsnummer"
+
+#: src/billy_invoice/models.py:23
+msgid "Invoice date"
+msgstr "Rechnungsdatum"
+
+#: src/billy_invoice/models.py:38
+#: src/billy_invoice/templates/billy_invoice/index.html:9
+#: src/shared/templates/shared/base.html:58
+msgid "Invoices"
+msgstr "Rechnungen"
+
+#: src/billy_invoice/models.py:47 src/billy_warehouse/models.py:146
+#: src/billy_warehouse/models.py:153
+msgid "Product"
+msgstr "Produkt"
+
+#: src/billy_invoice/models.py:52
+msgid "Netto price per unit (in Cents)"
+msgstr "Nettopreis pro Stück (in Cent)"
+
+#: src/billy_invoice/models.py:55
+msgid "VAT rate"
+msgstr "MwSt-Satz"
+
+#: src/billy_invoice/models.py:69
+msgid "Invoice item"
+msgstr "Rechnungsposten"
+
+#: src/billy_invoice/models.py:70
+msgid "Invoice items"
+msgstr "Rechnungsposten"
+
+#: src/billy_invoice/templates/billy_invoice/cart.html:28
+msgid "No customer selected, yet"
+msgstr "Bisher is kein Kunde ausgewählt"
+
+#: src/billy_invoice/templates/billy_invoice/cart.html:29
+#: src/billy_invoice/templates/billy_invoice/cart.html:31
+msgid "Choose customer"
+msgstr "Kunde auswählen"
+
+#: src/billy_invoice/templates/billy_invoice/cart.html:36
+#: src/billy_warehouse/models.py:147
+msgid "Products"
+msgstr "Produkte"
+
+#: src/billy_invoice/templates/billy_invoice/cart.html:45
+msgid "No products to see here"
+msgstr "Hier gibt es keine Produkte zu sehen"
+
+#: src/billy_invoice/templates/billy_invoice/cart.html:49
+#: src/billy_invoice/templates/billy_invoice/cart.html:51
+msgid "Add more products"
+msgstr "Produkte hinzufügen"
+
+#: src/billy_invoice/templates/billy_invoice/cart.html:56
+msgid "Actions"
+msgstr "Aktionen"
+
+#: src/billy_invoice/templates/billy_invoice/index.html:12
+msgid "New invoice"
+msgstr "Neue Rechnung"
+
+#: src/billy_warehouse/apps.py:8
+#: src/billy_warehouse/templates/billy_warehouse/base.html:8
+#: src/shared/templates/shared/base.html:66
+msgid "Warehouse"
+msgstr "Warenhaus"
+
+#: src/billy_warehouse/forms.py:25
+msgid "Description"
+msgstr "Beschreibung"
+
+#: src/billy_warehouse/forms.py:84 src/billy_warehouse/models.py:31
+#: src/billy_warehouse/models.py:50 src/billy_warehouse/models.py:95
+msgid "Name"
+msgstr "Name"
+
+#: src/billy_warehouse/forms.py:117
+msgid "Product name"
+msgstr "Produktname"
+
+#: src/billy_warehouse/forms.py:124 src/billy_warehouse/forms.py:125
+msgid "Clear search"
+msgstr "Suche löschen"
+
+#: src/billy_warehouse/forms.py:149
+msgid "Add new product"
+msgstr "Neues Produkt hinzufügen"
+
+#: src/billy_warehouse/forms.py:163 src/billy_warehouse/models.py:81
+#: src/billy_warehouse/models.py:98
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:34
+msgid "Category"
+msgstr "Kategorie"
+
+#: src/billy_warehouse/models.py:38 src/billy_warehouse/models.py:102
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:35
+msgid "Vendor"
+msgstr "Hersteller"
+
+#: src/billy_warehouse/models.py:39
+msgid "Vendors"
+msgstr "Hersteller"
+
+#: src/billy_warehouse/models.py:53
+msgid "Attributes form class"
+msgstr "Formularklasse für Attribute"
+
+#: src/billy_warehouse/models.py:59
+msgid "Details template path"
+msgstr "Templatepfad für Produktdetails"
+
+#: src/billy_warehouse/models.py:60
+msgid "Used in products overview"
+msgstr "Benutzt in Produktübersicht"
+
+#: src/billy_warehouse/models.py:66
+msgid "Function to generate the search document"
+msgstr "Funktion zum Erstellen eines Suchdokuments"
+
+#: src/billy_warehouse/models.py:68
+#| msgid ""
+msgid ""
+"This function should return a string containing words for the search index "
+"(Callable[[Product], str])"
+msgstr ""
+"Diese Funktion sollte eine Zeichenkette mit Wörtern für den Suchindex zurückgeben "
+"(Callable[[Product], str])"
+
+#: src/billy_warehouse/models.py:82
+msgid "Categories"
+msgstr "Kategorien"
+
+#: src/billy_warehouse/models.py:105
+msgid "Netto price (in Euro)"
+msgstr "Nettopreis (in Euro)"
+
+#: src/billy_warehouse/models.py:109
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:38
+msgid "Details"
+msgstr "Details"
+
+#: src/billy_warehouse/models.py:111 src/billy_warehouse/models.py:197
+msgid "Search document"
+msgstr "Suchdokument"
+
+#: src/billy_warehouse/models.py:158
+msgid "Stock"
+msgstr "Bestand"
+
+#: src/billy_warehouse/models.py:159
+msgid "Stocks"
+msgstr "Bestände"
+
+#: src/billy_warehouse/templates/billy_warehouse/base.html:30
+msgid "Add or edit a Product"
+msgstr "Produkt hinzufügen oder ändern"
+
+#: src/billy_warehouse/templates/billy_warehouse/base.html:89
+msgid "Add product to cart"
+msgstr "Produkt zum Warenkorb hinzufügen"
+
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:14
+msgid "Edit product"
+msgstr "Produkt ändern"
+
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:19
+msgid "Edit"
+msgstr "Ändern"
+
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:24
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:29
+msgid "Add to cart"
+msgstr "Zum Warenkorb hinzufügen"
+
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:42
+msgid "No products to show"
+msgstr "Keine Produkte zur Anzeige"
+
+#: src/config/urls.py:26
+msgid "Billy Administration"
+msgstr "Billy Administration"
+
+#: src/config/urls.py:27
+msgid "Billy Administration Portal"
+msgstr "Billy Administrationsportal"
+
+#: src/config/urls.py:28
+msgid "Welcome to Billy's Administration Portal"
+msgstr "Willkommen auf dem Administrationsportal von Billy"
+
+#: src/customization/apps.py:8
+msgid "Customization"
+msgstr "Anpassungen"
+
+#: src/shared/forms.py:19
+msgid "The field may only contain digits"
+msgstr "Das Feld darf nur Ziffern enthalten"
+
+#: src/shared/forms.py:29
+msgid "Query"
+msgstr "Abfrage"
+
+#: src/shared/forms.py:31
+msgid "Limit"
+msgstr "Höchstgrenze"
+
+#: src/shared/forms.py:35
+msgid "Page number"
+msgstr "Seitennummer"
+
+#: src/shared/models.py:35
+msgid "Hidden"
+msgstr "Versteckt"
+
+#: src/shared/templates/registration/logged_out.html:11
+#, python-format
+msgid ""
+"\n"
+"    Thank you for using Billy!<br />\n"
+"    Want to <a href=\"%(login_url)s\">log in</a> again?\n"
+msgstr ""
+"\n"
+"    Danke, dass Sie Billy genutzt haben!<br />\n"
+"    Möchten Sie sich wieder <a href=\"%(login_url)s\">anmelden</a>?\n"
+
+#: src/shared/templates/registration/login.html:11
+msgid "Log in"
+msgstr "Anmelden"
+
+#: src/shared/templates/registration/login.html:15
+msgid "Login"
+msgstr "Anmelden"
+
+#: src/shared/templates/shared/base.html:23
+msgid "Show shopping cart"
+msgstr "Zeige Warenkorb"
+
+#: src/shared/templates/shared/base.html:39
+msgid "Toggle navigation"
+msgstr "Navigation aus-/einklappen"
+
+#: src/shared/templates/shared/base.html:75
+msgid "Administration"
+msgstr "Administration"
+
+#: src/shared/templates/shared/base.html:83
+msgid "Logout"
+msgstr "Abmelden"
+
+#: src/start/templates/start/index.html:8
+msgid "Hello"
+msgstr "Hallo"
+
+#: src/start/templates/start/index.html:10
+msgid "Stranger"
+msgstr "Fremder"
+
+#: src/start/templates/start/index.html:11
+msgid "Welcome to Billy, your next generation billing system."
+msgstr "Willkommen zu Billy, Ihrem Rechnungssystem der nächsten Generation."
+
+#~ msgid "Sign in"
+#~ msgstr "Registrieren"

@@ -46,7 +46,7 @@ THIRD_PARTY_APPS = [
     "crispy_bootstrap5",
 ]
 
-CUSTOM_APPS = ["billy_warehouse", "billy_invoice", "billy_customer", "shared", "start"]
+CUSTOM_APPS = ["billy_warehouse", "billy_invoice", "billy_customer", "shared", "start", "customization"]
 
 
 INSTALLED_APPS = CUSTOM_APPS + DJANGO_APPS + THIRD_PARTY_APPS
@@ -56,6 +56,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -77,6 +78,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "billy_invoice.context_processors.cart_info",
             ],
         },
     },
@@ -125,6 +127,10 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
+
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 
 
 # Static files (CSS, JavaScript, Images)

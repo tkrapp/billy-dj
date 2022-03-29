@@ -18,7 +18,17 @@
         <div class="container-md px-0 mx-md-auto">
             <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="{% url 'start:index' %}">Billy</a>
+                    <div class="navbar-brand">
+                        <a class="text-decoration-none link-light me-3" href="{% url 'start:index' %}">Billy</a>
+                        <a class="btn btn-sm btn-dark position-relative" href="{% url 'billy_invoice:cart' %}" title="{% trans 'Show shopping cart' %}">
+                            {% bsicon 'cart' %}
+                            {% if cart_info.num_products > 0 %}
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                                {{ cart_info.num_products }}
+                            </span>
+                            {% endif %}
+                        </a>
+                    </div>
                     <button
                         class="navbar-toggler"
                         type="button"
@@ -90,12 +100,12 @@
         {% block app_modals %}{% endblock %}
         {% block modals %}{% endblock %}
     </div>
-    <footer class="container-fluid shadow-sm bg-dark text-light">
+    {% comment %} <footer class="container-fluid shadow-sm bg-dark text-light">
         <div class="container-md px-0 px-md-2 mx-md-auto">
             {% block html_footer %}{% endblock %}
             Powered by <a class="link-light" href="https://djangoproject.com">Django</a>
         </div>
-    </footer>
+    </footer> {% endcomment %}
 
     <script
         src="https://unpkg.com/htmx.org@1.6.1/dist/htmx.min.js"

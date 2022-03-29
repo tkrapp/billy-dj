@@ -1,0 +1,90 @@
+{% load i18n %}
+{% load bs_icons %}
+
+<div class="container-fluid px-0" id="{{ customers_list_id }}" hx-history-elt>
+    <ul class="list-unstyled rounded">
+    {% for letter, customers in grouped_customers %}
+        <li class="">
+            <h2 class="container-fluid bg-dark text-white m-0{% if forloop.first %} rounded-top{% endif %}">{{ letter }}</h2>
+            <ul class="ps-0 list-group-flush">
+            {% for customer in customers %}
+                <li class="list-group-item border-start border-end{% if forloop.parentloop.last and forloop.last %} border-bottom rounded-bottom{% endif %}">
+                    <a class="link-dark" href="{{ customer.get_absolute_url }}{{ search_form_qs }}">{{ customer.last_name }}, {{ customer.first_name }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </li>
+    {% empty %}
+        <li>{% trans 'No customers to show' %}</li>
+    {% endfor %}
+    </ul>
+    <div class="fixed-bottom d-flex justify-content-around align-items-baseline pb-2 pt-2 bg-secondary text-light shadow rounded-top">
+        <button
+            class="btn btn-sm btn-light"
+            title="{% trans 'Go to first page' %}"
+            aria-label="{% trans 'Go to first page' %}"
+            {% if customers.has_previous %}
+                hx-get="?p=1"
+                hx-target="#{{ customers_list_id }}"
+                hx-swap="outerHTML"
+                hx-push-url="true"
+            {% else %}
+                disabled
+            {% endif %}
+        >
+            {% bsicon 'chevron-double-left' %}
+        </button>
+        <button
+            class="btn btn-sm btn-light"
+            title="{% trans 'Go to previous page' %}"
+            aria-label="{% trans 'Go to previous page' %}"
+            {% if customers.has_previous %}
+                hx-get="?p={{ customers.previous_page_number }}"
+                hx-target="#{{ customers_list_id }}"
+                hx-swap="outerHTML"
+                hx-push-url="true"
+            {% else %}
+                disabled
+            {% endif %}
+        >
+            {% bsicon 'chevron-left' %}
+        </button>
+
+        <small>
+        {% blocktrans with current_page_number=customers.number num_pages=customers.paginator.num_pages %}
+            Showing page {{ current_page_number }} of {{ num_pages }}.
+        {% endblocktrans %}
+        </small>
+
+        <button
+            class="btn btn-sm btn-light"
+            title="{% trans 'Go to next page' %}"
+            aria-label="{% trans 'Go to next page' %}"
+            {% if customers.has_next %}
+                hx-get="?p={{ customers.next_page_number }}"
+                hx-target="#{{ customers_list_id }}"
+                hx-swap="outerHTML"
+                hx-push-url="true"
+            {% else %}
+                disabled
+            {% endif %}
+        >
+            {% bsicon 'chevron-right' %}
+        </button>
+        <button
+            class="btn btn-sm btn-light"
+            title="{% trans 'Go to last page' %}"
+            aria-label="{% trans 'Go to last page' %}"
+            {% if customers.has_next %}
+                hx-get="?p={{ customers.paginator.num_pages }}"
+                hx-target="#{{ customers_list_id }}"
+                hx-swap="outerHTML"
+                hx-push-url="true"
+            {% else %}
+                disabled
+            {% endif %}
+        >
+            {% bsicon 'chevron-double-right' %}
+        </button>
+    </div>
+</div>

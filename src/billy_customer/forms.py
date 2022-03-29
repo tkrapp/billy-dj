@@ -2,7 +2,7 @@ from typing import Optional
 
 from crispy_forms.bootstrap import StrictButton, FieldWithButtons
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import ButtonHolder, Div, Field, Layout, Row
+from crispy_forms.layout import ButtonHolder, Div, Field, Layout, Row, HTML
 from django import forms
 from django.core.exceptions import ValidationError
 from django.urls.base import reverse
@@ -15,10 +15,18 @@ from .models import Address, Customer
 
 
 class SearchForm(forms.Form):
-    q = forms.CharField(label=gettext_lazy("Search text"), widget=SearchInput)
+    q = forms.CharField(
+        label=gettext_lazy("Search text"), widget=SearchInput(attrs={"id": "id_q"})
+    )
 
-    def __init__(self, *args, add_url: str, **kwargs):
+    def __init__(
+        self, *args, add_url: str, clear_url: str, list_id: Optional[str], **kwargs
+    ):
         super().__init__(*args, **kwargs)
+
+        clear_button_params = {}
+        if list_id is not None:
+            clear_button_params["hx_target"] = f"#{list_id}"
 
         self.helper = FormHelper()
         self.helper.form_show_labels = False
@@ -31,6 +39,16 @@ class SearchForm(forms.Form):
                         "q",
                         placeholder=gettext_lazy("Customer name"),
                         css_class="form-control-sm",
+                    ),
+                    HTML(f"""
+                        <a
+                            class="btn btn-secondary btn-sm"
+                            href="{clear_url}"
+                            aria_label={gettext_lazy("Clear search")}
+                        >
+                            {bsicon("x-lg")}
+                        </a>
+                        """,
                     ),
                     StrictButton(
                         mark_safe(bsicon("search")),

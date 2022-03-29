@@ -8,7 +8,7 @@
 {% block app_content %}
 
 <form method="POST" class="container-fluid mb-3 mt-1">
-    <h1>{% trans 'Sign in' %}</h1>
+    <h1>{% trans 'Log in' %}</h1>
     {{ form|crispy }}
     {% csrf_token %}
     <button class="btn btn-primary">

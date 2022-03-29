@@ -7,10 +7,10 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mt-3">
         <h1>{% trans 'Invoices' %}</h1>
-        <button class="btn btn-sm btn-outline-success">
+        <a class="btn btn-sm btn-success" href="{% url 'billy_invoice:cart' %}">
             {% bsicon 'plus-lg' %}
             {% trans 'New invoice' %}
-        </button>
+        </a>
     </div>
     <div class="list-group">
     {% for invoice in invoices %}

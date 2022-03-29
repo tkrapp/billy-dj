@@ -71,7 +71,7 @@ class JSONFormDefinitionField(models.JSONField):
         self, value, expression, connection
     ) -> Optional[Type[forms.Form]]:
         value = super().from_db_value(value, expression, connection)  # type: ignore
-
+        print(value, expression, connection)
         if value is None and self.default_form_class:
             return self.default_form_class
         elif value is None:
@@ -102,7 +102,7 @@ class JSONFormDefinitionField(models.JSONField):
         """
         )
         cmd = dedent(class_template.render(Context({"fields": value}))).strip()
-        locals_dict = {}
+        locals_dict: dict[str, Any] = {}
         exec(
             cmd,
             {

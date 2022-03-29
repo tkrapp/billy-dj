@@ -40,6 +40,9 @@ class Address(HideableModel, TimeStampedModel):
 
 
 class Customer(HideableModel, TimeStampedModel):
+    number = models.PositiveIntegerField(
+        verbose_name=gettext_lazy("Customer number"), null=True
+    )
     first_name = models.CharField(
         verbose_name=gettext_lazy("First name"), max_length=100
     )
@@ -66,7 +69,7 @@ class Customer(HideableModel, TimeStampedModel):
             self.save()
 
             new_obj = type(self).objects.create(
-                first_name=first_name, last_name=last_name
+                number=self.number, first_name=first_name, last_name=last_name
             )
             new_obj.addresses.set(self.addresses.all())
 

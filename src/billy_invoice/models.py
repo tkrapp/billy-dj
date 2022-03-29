@@ -1,12 +1,14 @@
 from datetime import date
-from django.db import models
-from django.utils.translation import gettext_lazy
 from decimal import Decimal
-from django.utils import timezone
 
-import billy_warehouse.models
 import billy_customer.models
+import billy_warehouse.models
+from django.db import models
+from django.utils import timezone
+from django.utils.translation import gettext_lazy
 from model_utils.models import TimeStampedModel
+
+from .conf import settings
 
 
 def today() -> date:
@@ -37,10 +39,6 @@ class Invoice(TimeStampedModel, models.Model):
 
 
 class InvoiceItem(TimeStampedModel, models.Model):
-    class VATChoices(models.IntegerChoices):
-        NINETEEN = 19
-        SEVEN = 7
-
     invoice = models.ForeignKey(
         to=Invoice, verbose_name=gettext_lazy("Invoice"), on_delete=models.RESTRICT
     )
@@ -54,7 +52,7 @@ class InvoiceItem(TimeStampedModel, models.Model):
         verbose_name=gettext_lazy("Netto price per unit (in Cents)")
     )
     vat_rate = models.PositiveSmallIntegerField(
-        verbose_name=gettext_lazy("VAT rate"), choices=VATChoices.choices
+        verbose_name=gettext_lazy("VAT rate"), choices=settings.VAT_CHOICES
     )
 
     @property

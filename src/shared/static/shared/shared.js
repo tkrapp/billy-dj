@@ -39,6 +39,12 @@ window.billyShared = {
         }
         return result;
     },
+    calcBruttoPrice(nettoPrice, vatRate) {
+        return nettoPrice * (1 + vatRate / 100);
+    },
+    calcNettoPrice(bruttoPrice, vatRate) {
+        return bruttoPrice / (1 + vatRate / 100);
+    }
 };
 
 const csrftoken = billyShared.getCookie("csrftoken");

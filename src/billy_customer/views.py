@@ -1,30 +1,39 @@
-from typing import cast
+import urllib.parse
+from itertools import groupby
+from typing import Optional
+
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db import transaction
+from django.db.models import Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls.base import reverse_lazy
-from shared.forms import render_crispy_form
-from django.db import transaction
-from django.db.models import Q
-from django_htmx.middleware import HtmxDetails
-from itertools import groupby
-
+from shared.forms import PaginationForm, render_crispy_form
 from shared.helpers.htmx import get_htmx_details
 
 from .forms import AddressForm, CustomerForm, SearchForm
 from .models import Address, Customer
+from .conf import settings
 
 NAMESPACE = "billy_customer"
 
 
-def get_search_form(request: HttpRequest) -> SearchForm:
+def get_search_form(request: HttpRequest, list_id: Optional[str] = None) -> SearchForm:
     search_form = SearchForm(
-        request.GET.copy(), add_url=reverse_lazy("billy_customer:add-customer")
+        request.GET.copy(),
+        add_url=reverse_lazy("billy_customer:add-customer"),
+        clear_url=reverse_lazy("billy_customer:index"),
+        list_id=list_id,
     )
 
     if search_form.is_valid():
         return search_form
-    return SearchForm(add_url=reverse_lazy("billy_customer:add-customer"))
+    return SearchForm(
+        add_url=reverse_lazy("billy_customer:add-customer"),
+        clear_url=reverse_lazy("billy_customer:index"),
+        list_id=list_id,
+    )
 
 
 def get_first_letter_of_last_name(obj: Customer) -> str:
@@ -33,31 +42,52 @@ def get_first_letter_of_last_name(obj: Customer) -> str:
 
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
-    customers = Customer.objects.visible()  # type: ignore
-    search_form = get_search_form(request)
+    customers_list_id = "customers-list"
+    customers_queryset = Customer.objects.visible()  # type: ignore
+    search_form = get_search_form(request, customers_list_id)
+    pagination_form = PaginationForm(request.GET)
+    search_form_qs = ""
 
     if search_form.is_valid():
         words = search_form.cleaned_data["q"].split()
 
         for word in words:
-            customers = customers.filter(
+            customers_queryset = customers_queryset.filter(
                 Q(first_name__contains=word) | Q(last_name__contains=word)
             )
 
-    return render(
+        search_form_qs = f"?{urllib.parse.urlencode(search_form.cleaned_data)}"
+
+    if get_htmx_details(request):
+        template_name = f"{NAMESPACE}/customers_list.html"
+    else:
+        template_name = f"{NAMESPACE}/index.html"
+
+    customers_paginator = Paginator(
+        customers_queryset.order_by("last_name", "first_name"),
+        per_page=settings.INDEX_PAGE_SIZE,
+    )
+    customers_page = customers_paginator.get_page(pagination_form.get_page_number())
+
+    response = render(
         request=request,
-        template_name=f"{NAMESPACE}/index.html",
+        template_name=template_name,
         context={
             "search_form": search_form,
+            "search_form_qs": search_form_qs,
             "grouped_customers": [
                 (key, list(group))
                 for key, group in groupby(
-                    customers.order_by("last_name", "first_name"),
+                    customers_page,
                     key=get_first_letter_of_last_name,
                 )
             ],
+            "customers": customers_page,
+            "customers_list_id": customers_list_id,
         },
     )
+
+    return response
 
 
 @login_required
@@ -149,9 +179,10 @@ def add_address(request: HttpRequest, pk: int) -> HttpResponse:
                 request=request,
                 template_name="billy_customer/details_customer_addresses.html",
                 context={
+                    "customer": customer,
                     "customer_addresses": customer.addresses.all().order_by(
                         "customeraddress"
-                    )
+                    ),
                 },
             )
 

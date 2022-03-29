@@ -13,12 +13,10 @@ django-model-utils = "*"
 django-bootstrap5 = "*"
 marisa-trie = "*"
 django-zero-settings = "*"
+typed-app-settings = "*"
 
 [dev-packages]
 black = "*"
 
 [requires]
 python_version = "3.9"
-
-[pipenv]
-allow_prereleases = true

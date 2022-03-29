@@ -5,9 +5,11 @@ from . import models
 
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ["full_name"]
+    list_display = ["number", "full_name", "hidden"]
     readonly_fields = ["created", "modified"]
     search_fields = ["fist_name", "last_name", "id"]
+    ordering = ["number"]
+    list_filter = ["hidden"]
 
 
 @admin.register(models.Address)

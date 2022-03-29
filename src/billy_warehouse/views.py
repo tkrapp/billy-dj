@@ -1,18 +1,15 @@
-from typing import Optional
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.http import HttpRequest, HttpResponse
 from django.http.response import HttpResponseBadRequest
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
 from django.urls.base import reverse_lazy
-
-
 from shared.forms import PaginationForm, render_crispy_form
 from shared.helpers.htmx import get_htmx_details
 from shared.helpers.response import update_headers
 
+from .forms import CategoryForm, ProductForm, ProductSearchForm, load_details_form
 from .models import Category, Product
-from .forms import CategoryForm, ProductForm, ProductSearchForm
 
 
 def get_search_form(request: HttpRequest, list_id: str) -> ProductSearchForm:
@@ -41,7 +38,7 @@ def index(request: HttpRequest) -> HttpResponse:
 
     if search_form.is_valid():
         products_queryset = products_queryset.filter(
-            name__contains=search_form.cleaned_data["q"]
+            productsearch__search_document__match=search_form.cleaned_data["q"]
         )
 
     products_paginator = Paginator(products_queryset, per_page=20)
@@ -78,7 +75,9 @@ def add_product(request: HttpRequest) -> HttpResponse:
         )
 
         if form.is_valid():
-            details_form = form.cleaned_data["category"].details_form(request.POST)
+            details_form = load_details_form(
+                form.cleaned_data["category"].details_form
+            )(request.POST)
             if details_form.is_valid():
                 form.instance.details = details_form.cleaned_data
                 form.save()
@@ -96,7 +95,7 @@ def add_product(request: HttpRequest) -> HttpResponse:
         else:
             # Try to get and render an apropriate details form
             if category := form.cleaned_data.get("category"):
-                details_form = category.details_form(request.POST)
+                details_form = load_details_form(category.details_form)(request.POST)
                 details_form.is_valid()
 
                 rendered_details_form = render_crispy_form(
@@ -132,7 +131,9 @@ def get_details_form(request: HttpRequest) -> HttpResponse:
     else:
         return HttpResponseBadRequest(category_form.errors)
 
-    return render_crispy_form(request=request, form=category_instance.details_form)
+    return render_crispy_form(
+        request=request, form=load_details_form(category_instance.details_form)()
+    )
 
 
 @login_required
@@ -151,7 +152,9 @@ def edit_product(request: HttpRequest, pk_product: int) -> HttpResponse:
         )
 
         if form.is_valid():
-            details_form = form.cleaned_data["category"].details_form(request.POST)
+            details_form = load_details_form(
+                form.cleaned_data["category"].details_form
+            )(request.POST)
             if details_form.is_valid():
                 form.instance.details = details_form.cleaned_data
 
@@ -170,7 +173,7 @@ def edit_product(request: HttpRequest, pk_product: int) -> HttpResponse:
         else:
             # Try to get and render an apropriate details form
             if category := form.cleaned_data.get("category"):
-                details_form = category.details_form(request.POST)
+                details_form = load_details_form(category.details_form)(request.POST)
                 details_form.is_valid()
 
                 rendered_details_form = render_crispy_form(
@@ -184,7 +187,7 @@ def edit_product(request: HttpRequest, pk_product: int) -> HttpResponse:
 
             return response
     else:
-        details_form = product.category.details_form(product.details)
+        details_form = load_details_form(product.category.details_form)(product.details)
         rendered_details_form = render_crispy_form(
             request=request, form=details_form
         ).content.decode()
@@ -195,7 +198,9 @@ def edit_product(request: HttpRequest, pk_product: int) -> HttpResponse:
                 instance=product,
                 form_id=form_id,
                 product_details_id=product_details_id,
-                target_url=reverse_lazy("billy_warehouse:edit-product", args=[product.pk]),
+                target_url=reverse_lazy(
+                    "billy_warehouse:edit-product", args=[product.pk]
+                ),
                 details_form_url=reverse_lazy("billy_warehouse:get-details-form-stub"),
                 rendered_details_form=rendered_details_form,
             ),

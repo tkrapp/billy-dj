@@ -10,9 +10,19 @@
         {% if address.address_2 %}<p class="mb-0">{{ address.address_2 }}</p>{% endif %}
         {% if address.address_3 %}<p class="mb-0">{{ address.address_3 }}</p>{% endif %}
         <p class="mb-0">{{ address.postal_code }} {{ address.city }}</p>
-        <small>{% blocktranslate with since=address.created|timesince %}
-            Created {{ since }} ago
-        {% endblocktranslate %}</small>
+        <div class="d-flex w-100 justify-content-between align-items-end">
+            <small>{% blocktranslate with since=address.created|timesince %}
+                Created {{ since }} ago
+            {% endblocktranslate %}</small>
+            <form action="{% url 'billy_invoice:set-customer-and-address' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" value="{{ address.pk }}" name="customer_address_id" />
+                <input type="hidden" value="{{ customer.pk }}" name="customer_id" />
+                <button class="btn btn-sm btn-outline-primary">
+                    {% trans 'Use in invoice' %}
+                </button>
+            </form>
+        </div>
     </div>
 {% empty %}
     <div class="list-group-item">

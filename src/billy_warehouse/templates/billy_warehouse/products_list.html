@@ -1,20 +1,34 @@
 {% load i18n %}
 {% load bs_icons %}
 
-<div class="container-fluid" id="products-list" hx-history-elt>
-    <ul class="ps-0 list-group">
+<div class="container-fluid" id="{{ products_list_id }}" hx-history-elt>
+    <ul class="px-0 list-group">
     {% for product in products %}
         <li class="list-group-item">
             <div class="d-flex w-100 justify-content-between mb-1">
                 <h3>{{ product.name }}</h3>
-                <button
-                    type="button"
-                    class="btn btn-sm btn-outline-primary"
-                    hx-target="#add-edit-product-modal-content"
-                    hx-get="{% url 'billy_warehouse:edit-product' product.pk %}"
-                >
-                    {% trans 'Edit' %}
-                </button>
+                <div>
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-primary"
+                        title="{% trans 'Edit product' %}"
+                        hx-target="#add-edit-product-modal-content"
+                        hx-get="{% url 'billy_warehouse:edit-product' product.pk %}"
+                    >
+                        {% bsicon 'pencil' %}
+                        <span class="visually-hidden">{% trans 'Edit' %}</span>
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-outline-primary"
+                        title="{% trans 'Add to cart' %}"
+                        hx-target="#add-to-cart-modal-content"
+                        hx-get="{% url 'billy_invoice:add-to-cart-form' product.pk %}"
+                    >
+                        {% bsicon 'cart-plus' %}
+                        <span class="visually-hidden">{% trans 'Add to cart' %}</span>
+                    </button>
+                </div>
             </div>
             <div class="d-flex flex-wrap w-100 justify-content-between">
                 <div>{% trans 'Category' %}: {{ product.category }}</div>
@@ -22,12 +36,10 @@
                 <div class="text-nowrap">{% trans 'Netto price' %}: <strong>{{ product.netto_price }}</strong> €</div>
             </div>
             <h4 class="mt-2 mb-0 small text-decoration-underline">{% trans 'Details' %}:</h4>
-            <div class="d-flex flex-wrap">
-                {{ product.details }}
-            </div>
+            {{ product.render_details }}
         </li>
     {% empty %}
-        <li>{% trans 'No products to show' %}</li>
+        <li class="list-group-item">{% trans 'No products to show' %}</li>
     {% endfor %}
     </ul>
     <div class="fixed-bottom d-flex justify-content-around align-items-baseline pb-2 pt-2 bg-secondary text-light shadow rounded-top">
@@ -37,7 +49,7 @@
             aria-label="{% trans 'Go to first page' %}"
             {% if products.has_previous %}
                 hx-get="?p=1"
-                hx-target="#products-list"
+                hx-target="#{{ products_list_id }}"
                 hx-swap="outerHTML"
                 hx-push-url="true"
             {% else %}
@@ -52,7 +64,7 @@
             aria-label="{% trans 'Go to previous page' %}"
             {% if products.has_previous %}
                 hx-get="?p={{ products.previous_page_number }}"
-                hx-target="#products-list"
+                hx-target="#{{ products_list_id }}"
                 hx-swap="outerHTML"
                 hx-push-url="true"
             {% else %}
@@ -74,7 +86,7 @@
             aria-label="{% trans 'Go to next page' %}"
             {% if products.has_next %}
                 hx-get="?p={{ products.next_page_number }}"
-                hx-target="#products-list"
+                hx-target="#{{ products_list_id }}"
                 hx-swap="outerHTML"
                 hx-push-url="true"
             {% else %}
@@ -89,7 +101,7 @@
             aria-label="{% trans 'Go to last page' %}"
             {% if products.has_next %}
                 hx-get="?p={{ products.paginator.num_pages }}"
-                hx-target="#products-list"
+                hx-target="#{{ products_list_id }}"
                 hx-swap="outerHTML"
                 hx-push-url="true"
             {% else %}
