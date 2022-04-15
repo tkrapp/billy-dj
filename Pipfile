@@ -14,6 +14,7 @@ django-bootstrap5 = "*"
 marisa-trie = "*"
 django-zero-settings = "*"
 typed-app-settings = "*"
+typing-extensions = "*"
 
 [dev-packages]
 black = "*"

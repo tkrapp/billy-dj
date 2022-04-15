@@ -1,27 +1,54 @@
 {% load i18n %}
+{% load bs_icons %}
 
 <div class="list-group mb-3" id="address-list">
-{% for address in customer_addresses %}
+{% for address, updated in customer_addresses %}
     <div class="list-group-item">
-        <div class="d-flex w-100 justify-content-between">
-            <h3 class="mb-1">{{ address.address_1 }}</h3>
-            <small>#{{ forloop.counter }}</small>
-        </div>
-        {% if address.address_2 %}<p class="mb-0">{{ address.address_2 }}</p>{% endif %}
-        {% if address.address_3 %}<p class="mb-0">{{ address.address_3 }}</p>{% endif %}
-        <p class="mb-0">{{ address.postal_code }} {{ address.city }}</p>
-        <div class="d-flex w-100 justify-content-between align-items-end">
-            <small>{% blocktranslate with since=address.created|timesince %}
-                Created {{ since }} ago
-            {% endblocktranslate %}</small>
-            <form action="{% url 'billy_invoice:set-customer-and-address' %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" value="{{ address.pk }}" name="customer_address_id" />
-                <input type="hidden" value="{{ customer.pk }}" name="customer_id" />
-                <button class="btn btn-sm btn-outline-primary">
-                    {% trans 'Use in invoice' %}
+        <div class="d-flex">
+            <div class="flex-grow-1 d-flex flex-column">
+                <small>#{{ forloop.counter }}</small>
+                <h3 class="mb-1 inline">{{ address.address_1 }}</h3>
+                {% if address.address_2 %}<p class="mb-0">{{ address.address_2 }}</p>{% endif %}
+                {% if address.address_3 %}<p class="mb-0">{{ address.address_3 }}</p>{% endif %}
+                <p class="mb-0 flex-grow-1">{{ address.postal_code }} {{ address.city }}</p>
+                <div class="d-flex w-100 justify-content-between align-items-end">
+                    <small>{% blocktranslate with since=updated|timesince %}
+                        Created {{ since }} ago
+                    {% endblocktranslate %}</small>
+                </div>
+            </div>
+            <div class="flex-grow-0 d-flex flex-column gap-2">
+                <button
+                    class="btn btn-danger"
+                    aria-label="{% trans 'Delete' %}"
+                    title="{% trans 'Delete' %}"
+                    hx-delete="{% url 'billy_customer:remove-address' customer.pk address.pk %}"
+                    hx-target="#address-list"
+                >
+                    {% bsicon 'trash' %}
                 </button>
-            </form>
+                <button
+                    class="btn btn-primary"
+                    hx-get="{% url 'billy_customer:edit-address' customer.pk address.pk %}"
+                    hx-target="#edit-address-modal-content"
+                    aria-label="{% trans 'Edit address' %}"
+                    title="{% trans 'Edit' %}"
+                >
+                    {% bsicon 'pencil' %}
+                </button>
+                <form action="{% url 'billy_invoice:set-customer-and-address' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{ address.pk }}" name="customer_address_id" />
+                    <input type="hidden" value="{{ customer.pk }}" name="customer_id" />
+                    <button
+                        class="btn btn-primary"
+                        aria-label="{% trans 'Use in invoice' %}"
+                        title="{% trans 'Use in invoice' %}"
+                    >
+                        {% bsicon 'receipt' %}
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 {% empty %}

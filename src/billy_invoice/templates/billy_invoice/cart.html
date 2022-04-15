@@ -37,6 +37,7 @@
         {% for product in products %}
             <li class="list-group-item">
                 <h3>{{ product.instance }}</h3>
+                <small>{{ product.instance.category }}</small>
                 <div class="mb-2">{{ product.instance.render_details }}</div>
                 {% crispy product.form %}
             </li>
@@ -45,7 +46,7 @@
         {% endfor %}
         </ul>
         <div class="text-end">
-            <a class="btn btn-outline-primary" href="{% url 'billy_warehouse:index' %}" title="{% trans 'Add more products' %}">
+            <a class="btn btn-primary" href="{% url 'billy_warehouse:index' %}" title="{% trans 'Add more products' %}">
                 {% bsicon 'plus' %}
                 {% trans 'Add more products' %}
             </a>
@@ -53,7 +54,16 @@
     </div>
     <div>
         <h2>{% trans 'Actions' %}</h2>
-
+        <div class="d-flex justify-content-end gap-3">
+            <button class="btn btn-primary">
+                {% bsicon 'save' %}
+                {% trans 'Save' %}
+            </button>
+            <button class="btn btn-success">
+                {% bsicon 'printer' %}
+                {% trans 'Print' %}
+            </button>
+        </div>
     </div>
 </div>
 {% endblock %}

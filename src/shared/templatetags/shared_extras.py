@@ -8,6 +8,6 @@ register = template.Library()
 def is_active_namespace(request: HttpRequest, namespace: str) -> str:
     resolved = request.resolver_match
 
-    if namespace in set(resolved.namespaces):
+    if resolved and namespace in set(resolved.namespaces):
         return "active"
     return ""

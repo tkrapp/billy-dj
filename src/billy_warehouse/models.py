@@ -121,24 +121,25 @@ class Product(HideableModel, TimeStampedModel):
         update_fields: Optional[Iterable[str]] = None,
     ) -> None:
         search_document_generators = {}
+        category = cast(Category, self.category)
 
-        if self.category.search_document_generator and (
+        if category.search_document_generator and (
             func := module_loading.import_string(
-                self.category.search_document_generator
+                category.search_document_generator
             )
         ):
-            search_document_generators = {self.category.pk: func}
+            search_document_generators = {category.pk: func}
 
         self.search_document = self.generate_search_document(search_document_generators)
 
         return super().save(force_insert, force_update, using, update_fields)
 
     def __str__(self) -> str:
-        return f"({self.vendor.name}) {self.name}"
+        return f"({cast(Vendor, self.vendor).name}) {self.name}"
 
     def render_details(self) -> str:
         return render_to_string(
-            (self.category.details_template or "billy_warehouse/default_details.html"),
+            (cast(Category, self.category).details_template or "billy_warehouse/default_details.html"),
             {"details": self.details},
         )
 
@@ -146,8 +147,11 @@ class Product(HideableModel, TimeStampedModel):
         self, search_document_generators: dict[int, Callable[["Product"], str]]
     ) -> str:
         additional_search_document = ""
+        category = cast(Category, self.category)
+        vendor = cast(Vendor, self.vendor)
+
         if search_document_generator := search_document_generators.get(
-            self.category.pk
+            category.pk
         ):
             additional_search_document = search_document_generator(self)
 
@@ -155,8 +159,8 @@ class Product(HideableModel, TimeStampedModel):
             " ".join(
                 [
                     self.name,
-                    self.category.name,
-                    self.vendor.name,
+                    category.name,
+                    vendor.name,
                 ]
             )
             + f" {additional_search_document}"
@@ -204,7 +208,7 @@ class ProductSearchManager(models.Manager):
 
 
 class ProductSearch(models.Model):
-    product = models.ForeignKey(
+    product = models.OneToOneField(
         to=Product, on_delete=models.CASCADE, primary_key=True, db_column="rowid"
     )
     search_document = models.TextField(verbose_name=gettext_lazy("Search document"))

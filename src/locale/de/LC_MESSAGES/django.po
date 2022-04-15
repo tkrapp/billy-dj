@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-29 01:08+0000\n"
+"POT-Creation-Date: 2022-04-15 01:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/billy_customer/apps.py:8 src/billy_customer/models.py:79
-#: src/billy_customer/models.py:85 src/billy_invoice/models.py:27
+#: src/billy_customer/apps.py:8 src/billy_customer/models.py:94
+#: src/billy_customer/models.py:100 src/billy_invoice/models.py:27
 #: src/billy_invoice/templates/billy_invoice/cart.html:14
 msgid "Customer"
 msgstr "Kunde"
@@ -56,52 +56,52 @@ msgstr "Die Postleitzahl muss eine Länge von fünf Zeichen haben"
 msgid "Postal code must contain only decimal digits"
 msgstr "Die Postleitzahl darf nur aus Ziffern bestehen"
 
-#: src/billy_customer/models.py:11
+#: src/billy_customer/models.py:16
 msgid "Address 1"
 msgstr "Adresse 1 (z.B. Straße, Hausnr.)"
 
-#: src/billy_customer/models.py:13
+#: src/billy_customer/models.py:18
 msgid "Address 2"
 msgstr "Adresse 2"
 
-#: src/billy_customer/models.py:16
+#: src/billy_customer/models.py:21
 msgid "Address 3"
 msgstr "Adresse 3"
 
-#: src/billy_customer/models.py:18
+#: src/billy_customer/models.py:23
 msgid "City"
 msgstr "Stadt"
 
-#: src/billy_customer/models.py:20
+#: src/billy_customer/models.py:25
 msgid "Postal code"
 msgstr "Postleitzahl"
 
-#: src/billy_customer/models.py:32 src/billy_customer/models.py:51
-#: src/billy_customer/models.py:88 src/billy_invoice/models.py:32
+#: src/billy_customer/models.py:37 src/billy_customer/models.py:56
+#: src/billy_customer/models.py:103 src/billy_invoice/models.py:32
 msgid "Address"
 msgstr "Adresse"
 
-#: src/billy_customer/models.py:33
+#: src/billy_customer/models.py:38
 #: src/billy_customer/templates/billy_customer/details.html:40
 msgid "Addresses"
 msgstr "Adressen"
 
-#: src/billy_customer/models.py:44
+#: src/billy_customer/models.py:49
 #: src/billy_customer/templates/billy_customer/details.html:27
 msgid "Customer number"
 msgstr "Kundennummer"
 
-#: src/billy_customer/models.py:47
+#: src/billy_customer/models.py:52
 #: src/billy_customer/templates/billy_customer/details.html:35
 msgid "First name"
 msgstr "Vorname"
 
-#: src/billy_customer/models.py:49
+#: src/billy_customer/models.py:54
 #: src/billy_customer/templates/billy_customer/details.html:31
 msgid "Last name"
 msgstr "Nachname"
 
-#: src/billy_customer/models.py:80
+#: src/billy_customer/models.py:95
 #: src/billy_customer/templates/billy_customer/base.html:7
 #: src/shared/templates/shared/base.html:50
 msgid "Customers"
@@ -127,6 +127,7 @@ msgstr "Schließen"
 #: src/billy_customer/templates/billy_customer/base.html:35
 #: src/billy_customer/templates/billy_customer/details.html:73
 #: src/billy_customer/templates/billy_customer/details.html:209
+#: src/billy_invoice/templates/billy_invoice/cart.html:61
 #: src/billy_warehouse/templates/billy_warehouse/base.html:40
 msgid "Save"
 msgstr "Sichern"
@@ -184,31 +185,49 @@ msgid "Change"
 msgstr "Ändern"
 
 #: src/billy_customer/templates/billy_customer/details.html:60
-msgid "Edit address data"
-msgstr "Adresse ändern"
+msgid "Add / Edit address data"
+msgstr "Adresse hinzufügen / ändern"
 
 #: src/billy_customer/templates/billy_customer/details.html:199
 msgid "Edit customer data"
 msgstr "Kundendaten ändern"
 
-#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:14
-#, python-format
+#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:15
 msgid ""
 "\n"
-"                Created %(since)s ago\n"
-"            "
+"                        Created %(since)s ago\n"
+"                    "
 msgstr ""
 "\n"
 "                Vor %(since)s erstellt\n"
 "            "
 
-#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:22
+#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:23
+#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:24
+msgid "Delete"
+msgstr ""
+
+#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:34
+msgid "Edit address"
+msgstr "Adresse ändern"
+
+#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:35
+#: src/billy_warehouse/templates/billy_warehouse/products_list.html:19
+msgid "Edit"
+msgstr "Ändern"
+
+#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:45
+#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:46
 msgid "Use in invoice"
 msgstr "In Rechnung benutzen"
 
-#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:30
+#: src/billy_customer/templates/billy_customer/details_customer_addresses.html:57
 msgid "There are no addresses, yet"
 msgstr "Hier gibt es bisher keine Adressen"
+
+#: src/billy_customer/views.py:143
+msgid "Could not find a matching address"
+msgstr "Adresse konnte nicht gefunden werden"
 
 #: src/billy_invoice/apps.py:8 src/billy_invoice/models.py:37
 #: src/billy_invoice/models.py:43
@@ -220,12 +239,16 @@ msgstr "Rechnung"
 msgid "Netto price"
 msgstr "Nettopreis"
 
-#: src/billy_invoice/forms.py:38
+#: src/billy_invoice/forms.py:34
+msgid "<abbr title=\"Value Added Tax\">VAT</abbr>"
+msgstr "<abbr title=\"Mehrwertsteuer\">MwSt.</abbr>"
+
+#: src/billy_invoice/forms.py:40
 msgid "Brutto price"
 msgstr "Bruttopreis"
 
-#: src/billy_invoice/forms.py:45 src/billy_invoice/models.py:50
-#: src/billy_warehouse/models.py:155
+#: src/billy_invoice/forms.py:47 src/billy_invoice/models.py:50
+#: src/billy_warehouse/models.py:179
 msgid "Quantity"
 msgstr "Anzahl"
 
@@ -243,8 +266,8 @@ msgstr "Rechnungsdatum"
 msgid "Invoices"
 msgstr "Rechnungen"
 
-#: src/billy_invoice/models.py:47 src/billy_warehouse/models.py:146
-#: src/billy_warehouse/models.py:153
+#: src/billy_invoice/models.py:47 src/billy_warehouse/models.py:170
+#: src/billy_warehouse/models.py:177
 msgid "Product"
 msgstr "Produkt"
 
@@ -274,22 +297,26 @@ msgid "Choose customer"
 msgstr "Kunde auswählen"
 
 #: src/billy_invoice/templates/billy_invoice/cart.html:36
-#: src/billy_warehouse/models.py:147
+#: src/billy_warehouse/models.py:171
 msgid "Products"
 msgstr "Produkte"
 
-#: src/billy_invoice/templates/billy_invoice/cart.html:45
+#: src/billy_invoice/templates/billy_invoice/cart.html:46
 msgid "No products to see here"
 msgstr "Hier gibt es keine Produkte zu sehen"
 
-#: src/billy_invoice/templates/billy_invoice/cart.html:49
-#: src/billy_invoice/templates/billy_invoice/cart.html:51
+#: src/billy_invoice/templates/billy_invoice/cart.html:50
+#: src/billy_invoice/templates/billy_invoice/cart.html:52
 msgid "Add more products"
 msgstr "Produkte hinzufügen"
 
-#: src/billy_invoice/templates/billy_invoice/cart.html:56
+#: src/billy_invoice/templates/billy_invoice/cart.html:57
 msgid "Actions"
 msgstr "Aktionen"
+
+#: src/billy_invoice/templates/billy_invoice/cart.html:65
+msgid "Print"
+msgstr "Drucken"
 
 #: src/billy_invoice/templates/billy_invoice/index.html:12
 msgid "New invoice"
@@ -354,13 +381,12 @@ msgid "Function to generate the search document"
 msgstr "Funktion zum Erstellen eines Suchdokuments"
 
 #: src/billy_warehouse/models.py:68
-#| msgid ""
 msgid ""
 "This function should return a string containing words for the search index "
 "(Callable[[Product], str])"
 msgstr ""
-"Diese Funktion sollte eine Zeichenkette mit Wörtern für den Suchindex zurückgeben "
-"(Callable[[Product], str])"
+"Diese Funktion sollte eine Zeichenkette mit Wörtern für den Suchindex "
+"zurückgeben (Callable[[Product], str])"
 
 #: src/billy_warehouse/models.py:82
 msgid "Categories"
@@ -375,15 +401,15 @@ msgstr "Nettopreis (in Euro)"
 msgid "Details"
 msgstr "Details"
 
-#: src/billy_warehouse/models.py:111 src/billy_warehouse/models.py:197
+#: src/billy_warehouse/models.py:111 src/billy_warehouse/models.py:214
 msgid "Search document"
 msgstr "Suchdokument"
 
-#: src/billy_warehouse/models.py:158
+#: src/billy_warehouse/models.py:182
 msgid "Stock"
 msgstr "Bestand"
 
-#: src/billy_warehouse/models.py:159
+#: src/billy_warehouse/models.py:183
 msgid "Stocks"
 msgstr "Bestände"
 
@@ -398,10 +424,6 @@ msgstr "Produkt zum Warenkorb hinzufügen"
 #: src/billy_warehouse/templates/billy_warehouse/products_list.html:14
 msgid "Edit product"
 msgstr "Produkt ändern"
-
-#: src/billy_warehouse/templates/billy_warehouse/products_list.html:19
-msgid "Edit"
-msgstr "Ändern"
 
 #: src/billy_warehouse/templates/billy_warehouse/products_list.html:24
 #: src/billy_warehouse/templates/billy_warehouse/products_list.html:29
@@ -444,7 +466,7 @@ msgstr "Höchstgrenze"
 msgid "Page number"
 msgstr "Seitennummer"
 
-#: src/shared/models.py:35
+#: src/shared/models.py:50
 msgid "Hidden"
 msgstr "Versteckt"
 
@@ -494,6 +516,3 @@ msgstr "Fremder"
 #: src/start/templates/start/index.html:11
 msgid "Welcome to Billy, your next generation billing system."
 msgstr "Willkommen zu Billy, Ihrem Rechnungssystem der nächsten Generation."
-
-#~ msgid "Sign in"
-#~ msgstr "Registrieren"

@@ -20,7 +20,7 @@ class CustomerIdAndAddressForm(forms.Form):
 
 class AddToCartForm(forms.Form):
     product = forms.ModelChoiceField(
-        queryset=warehouse_models.Product.objects.visible()  # type: ignore
+        queryset=warehouse_models.Product.objects.visible()
     )
     netto_price = forms.FloatField(
         label=gettext_lazy("Netto price"),
@@ -30,7 +30,9 @@ class AddToCartForm(forms.Form):
         widget=forms.NumberInput(attrs={"step": "0.01"}),
     )
     vat = forms.ChoiceField(
-        label=gettext_lazy(mark_safe('<abbr title="Value Added Tax">VAT</abbr>')),
+        label=gettext_lazy(
+            mark_safe(gettext_lazy('<abbr title="Value Added Tax">VAT</abbr>'))
+        ),
         choices=settings.VAT_CHOICES,
         initial=settings.VAT_CHOICES[0],
     )

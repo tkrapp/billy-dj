@@ -1,20 +1,22 @@
 import urllib.parse
 from itertools import groupby
-from typing import Optional
+from typing import Optional, cast
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Q
-from django.http import HttpRequest, HttpResponse
+from django.http import Http404, HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls.base import reverse_lazy
+from django.utils.translation import gettext_lazy
+from django.views.decorators.http import require_http_methods
 from shared.forms import PaginationForm, render_crispy_form
 from shared.helpers.htmx import get_htmx_details
 
-from .forms import AddressForm, CustomerForm, SearchForm
-from .models import Address, Customer
 from .conf import settings
+from .forms import AddressForm, CustomerForm, SearchForm
+from .models import Address, Customer, CustomerAddress
 
 NAMESPACE = "billy_customer"
 
@@ -101,14 +103,14 @@ def details(request: HttpRequest, pk: int) -> HttpResponse:
         context={
             "customer": customer,
             "search_form": search_form,
-            "customer_addresses": customer.addresses.order_by("customeraddress"),
+            "customer_addresses": customer.get_visible_addresses(),
         },
     )
 
 
 @login_required
 def edit_customer_data(request: HttpRequest, pk: int) -> HttpResponse:
-    customer = Customer.objects.get(pk=pk)
+    customer: Customer = Customer.objects.get(pk=pk)
     target_url = reverse_lazy(
         "billy_customer:edit-customer-data", kwargs={"pk": customer.pk}
     )
@@ -118,7 +120,7 @@ def edit_customer_data(request: HttpRequest, pk: int) -> HttpResponse:
         edit_form = CustomerForm(request.POST, target_url=target_url)
 
         if edit_form.is_valid():
-            customer = customer.change_data(**edit_form.cleaned_data)
+            customer = customer.update(edit_form.cleaned_data)
             edit_form = CustomerForm(instance=customer, target_url=target_url)
 
             response = render_crispy_form(request, edit_form)
@@ -132,19 +134,76 @@ def edit_customer_data(request: HttpRequest, pk: int) -> HttpResponse:
 
 @login_required
 def edit_address(request: HttpRequest, pk: int, address_pk: int) -> HttpResponse:
+    form_id = "add-edit-address"
     customer = Customer.objects.get(pk=pk)
-    address = Address.objects.get(pk=address_pk)
 
-    if not address in customer.addresses:
-        raise Exception("NOO")
+    try:
+        address: Address = customer.addresses.get(pk=address_pk)
+    except Address.DoesNotExist:
+        raise Http404(gettext_lazy("Could not find a matching address"))
 
-    address_form = AddressForm(instance=address, target_url="...")
+    if request.method == "POST":
+        address_form = AddressForm(
+            request.POST,
+            target_url=request.path,
+            target="#address-list",
+            form_id=form_id,
+        )
+        headers = {}
+        htmx_details = get_htmx_details(request)
+        saved = False
+        status = None
+        new_address = None
 
-    return render(
-        request=request,
-        template_name=f"{NAMESPACE}/add_edit_address.html",
-        context={"form": address_form},
+        with transaction.atomic():
+            if address_form.is_valid():
+                address_form.save()
+                new_address = address_form.instance
+                saved = True
+            elif existing_address := address_form.get_already_existing():
+                new_address = existing_address
+                saved = True
+            elif not address_form.is_valid() and htmx_details is not None:
+                headers["HX-Retarget"] = f"#{form_id}"
+
+            if saved:
+                query = CustomerAddress.objects.filter(
+                    customer=customer, address=new_address
+                )
+                if query.count():
+                    query.update(hidden=False)
+                else:
+                    CustomerAddress.objects.get(
+                        customer=customer, address=address
+                    ).update({"customer": customer, "address": new_address})
+
+                return render(
+                    request=request,
+                    template_name="billy_customer/details_customer_addresses.html",
+                    context={
+                        "customer": customer,
+                        "customer_addresses": customer.get_visible_addresses(),
+                    },
+                )
+
+        response = render_crispy_form(request, address_form)
+        for header, value in headers.items():
+            response.headers[header] = value
+
+        if status:
+            response.status_code = status
+
+        return response
+
+    address_form = AddressForm(
+        instance=address,
+        target_url=reverse_lazy(
+            "billy_customer:edit-address", args=(customer.pk, address.pk)
+        ),
+        target="#address-list",
     )
+
+    return render_crispy_form(request=request, form=address_form)
 
 
 @login_required
@@ -162,29 +221,36 @@ def add_address(request: HttpRequest, pk: int) -> HttpResponse:
         htmx_details = get_htmx_details(request)
         saved = False
         status = None
+        new_address = None
 
         with transaction.atomic():
             if address_form.is_valid():
                 address_form.save()
-                customer.addresses.add(address_form.instance)
+                new_address = address_form.instance
                 saved = True
             elif address := address_form.get_already_existing():
-                customer.addresses.add(address)
+                new_address = address
                 saved = True
             elif not address_form.is_valid() and htmx_details is not None:
                 headers["HX-Retarget"] = f"#{form_id}"
 
-        if saved:
-            return render(
-                request=request,
-                template_name="billy_customer/details_customer_addresses.html",
-                context={
-                    "customer": customer,
-                    "customer_addresses": customer.addresses.all().order_by(
-                        "customeraddress"
-                    ),
-                },
-            )
+            if saved:
+                query = CustomerAddress.objects.filter(
+                    customer=customer, address=new_address
+                )
+                if query.count():
+                    query.update(hidden=False)
+                else:
+                    customer.addresses.add(new_address)
+
+                return render(
+                    request=request,
+                    template_name="billy_customer/details_customer_addresses.html",
+                    context={
+                        "customer": customer,
+                        "customer_addresses": customer.get_visible_addresses(),
+                    },
+                )
 
         response = render_crispy_form(request, address_form)
         for header, value in headers.items():
@@ -224,4 +290,23 @@ def add_customer(request: HttpRequest) -> HttpResponse:
 
     return render_crispy_form(
         request=request, form=CustomerForm(target_url=request.path)
+    )
+
+
+@login_required
+@require_http_methods(["DELETE"])
+def remove_address(request: HttpRequest, pk: int, address_pk: int) -> HttpResponse:
+    customer = Customer.objects.get(pk=pk)
+    customer_address_relation = CustomerAddress.objects.get(
+        customer=customer, address_id=address_pk
+    )
+    customer_address_relation.hide()
+
+    return render(
+        request=request,
+        template_name="billy_customer/details_customer_addresses.html",
+        context={
+            "customer": customer,
+            "customer_addresses": customer.get_visible_addresses(),
+        },
     )

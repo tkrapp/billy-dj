@@ -1,3 +1,8 @@
+from __future__ import annotations
+from datetime import datetime
+
+from typing import Any, Mapping
+from typing_extensions import Self
 from django.db import models, transaction
 from django.urls.base import reverse
 from django.utils.translation import gettext_lazy
@@ -63,17 +68,27 @@ class Customer(HideableModel, TimeStampedModel):
     def get_absolute_url(self):
         return reverse("billy_customer:details", kwargs={"pk": self.pk})
 
-    def change_data(self, *, first_name: str, last_name: str) -> "Customer":
+    def update(self, data: Mapping[str, Any]) -> Customer:
         with transaction.atomic():
-            self.hidden = True
-            self.save()
+            clone = super().update(data)
 
-            new_obj = type(self).objects.create(
-                number=self.number, first_name=first_name, last_name=last_name
-            )
-            new_obj.addresses.set(self.addresses.all())
+            for customer_address_relation in CustomerAddress.objects.visible().filter(
+                customer=self
+            ):
+                new_relation = customer_address_relation.clone()
+                new_relation.customer = clone
+                new_relation.save()
 
-            return new_obj
+            return clone
+
+    def get_visible_addresses(self) -> list[tuple[Address, datetime]]:
+        return [
+            (customer_address.address, customer_address.modified)
+            for customer_address in CustomerAddress.objects.visible()
+            .filter(customer=self)
+            .select_related("address")
+            .order_by("address")
+        ]
 
     class Meta:
         verbose_name = gettext_lazy("Customer")
@@ -87,6 +102,8 @@ class CustomerAddress(HideableModel, TimeStampedModel):
     address = models.ForeignKey(
         to=Address, verbose_name=gettext_lazy("Address"), on_delete=models.RESTRICT
     )
+
+    objects: HideableManager = HideableManager()
 
     class Meta:
         constraints = [

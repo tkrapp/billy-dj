@@ -14,11 +14,18 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(models.Address)
 class AddressAdmin(admin.ModelAdmin):
-    list_display = ["postal_code", "city", "address_1", "address_2", "address_3"]
+    list_display = [
+        "postal_code",
+        "city",
+        "address_1",
+        "address_2",
+        "address_3",
+        "hidden",
+    ]
     readonly_fields = ["created", "modified"]
 
 
 @admin.register(models.CustomerAddress)
 class CustomerAddressAdmin(admin.ModelAdmin):
-    list_display = ["customer", "address"]
+    list_display = ["customer", "address", "hidden"]
     search_fields = ["customer__name"]

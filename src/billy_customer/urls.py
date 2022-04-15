@@ -22,4 +22,9 @@ urlpatterns = [
         views.add_address,
         name="add-address",
     ),
+    path(
+        "details/<int:pk>/remove-address/<int:address_pk>",
+        views.remove_address,
+        name="remove-address",
+    )
 ]

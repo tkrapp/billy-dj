@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from textwrap import dedent
-from typing import Any, Mapping, Optional, Type, TypeVar
+from typing import Any, Generic, Mapping, Optional, Type, TypeVar
+from typing_extensions import Self
 
 from django import forms
 from django.core.exceptions import ValidationError
@@ -16,15 +17,29 @@ _T = TypeVar("_T")
 _I = TypeVar("_I", bound=models.Model)
 
 
-class HideableManager(models.Manager):
-    def visible(self) -> QuerySet:
-        return super().get_queryset().filter(hidden=False)
+class HideableQuerySet(Generic[_I], models.QuerySet):
+    def visible(self) -> HideableQuerySet[_I]:
+        return self.filter(hidden=False)
 
-    def hidden(self) -> QuerySet:
-        return super().get_queryset().filter(hidden=True)
+    def hidden(self) -> HideableQuerySet[_I]:
+        return self.filter(hidden=True)
+
+
+class HideableManager(models.Manager):
+    def visible(self) -> "HideableQuerySet[HideableModel]":
+        return self.get_queryset().visible()
+
+    def hidden(self) -> "HideableQuerySet[HideableModel]":
+        return self.get_queryset().hidden()
+
+    def get_queryset(self) -> "HideableQuerySet[HideableModel]":
+        queryset = HideableQuerySet(self.model)
+
+        if self._db is not None:
+            return queryset.using(self._db)
+        return queryset.using("default")
 
     def replace(self, instance: HideableModel, other: HideableModel):
-        print("JO")
         with transaction.atomic():
             instance.hidden = True
             instance.save()
@@ -43,17 +58,24 @@ class HideableModel(models.Model):
             }
         )
 
-    def update(self, data: Mapping[str, Any]):
+    def update(self, data: Mapping[str, Any]) -> Self:
         with transaction.atomic():
             clone = self.clone()
 
             self.hidden = True
             self.save()
 
-            for field in data:
-                setattr(clone, field, getattr(self, field))
+            for field, value in data.items():
+                setattr(clone, field, value)
 
             clone.save()
+
+            return clone
+
+    def hide(self):
+        with transaction.atomic():
+            self.hidden = True
+            self.save()
 
     class Meta:
         abstract = True
