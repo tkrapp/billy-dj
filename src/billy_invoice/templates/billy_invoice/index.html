@@ -16,6 +16,7 @@
     {% for invoice in invoices %}
         <div class="list-group-item">
             {{ invoice }}
+            <a href="{% url 'billy_invoice:show-invoice' invoice.pk %}">{% trans 'show' %}</a>
         </div>
     {% endfor %}
     </div>

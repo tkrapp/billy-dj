@@ -1,8 +1,6 @@
-from decimal import Decimal, getcontext
+from decimal import Decimal
 from typing import Optional
 
-from billy_customer import models as customer_models
-from billy_warehouse import models as warehouse_models
 from django.contrib.auth.decorators import login_required
 from django.http import (
     HttpRequest,
@@ -10,9 +8,12 @@ from django.http import (
     HttpResponseBadRequest,
     HttpResponseRedirect,
 )
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_GET, require_POST
+
+from billy_customer import models as customer_models
+from billy_warehouse import models as warehouse_models
 from shared.forms import render_crispy_form
 
 from . import forms, models
@@ -23,6 +24,10 @@ from .types import CartSessionDict, VATChoices
 
 @login_required
 def index(request: HttpRequest) -> HttpResponse:
+    """
+    Display list of invoices
+    """
+
     invoices = models.Invoice.objects.all()
 
     return render(
@@ -33,13 +38,36 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
+def show_invoice(request: HttpRequest, invoice_pk: int) -> HttpResponse:
+    """
+    Display a specific invoice
+    """
+
+    invoice = get_object_or_404(models.Invoice.objects, pk=invoice_pk)
+
+    return render(
+        request=request,
+        template_name="billy_invoice/invoice.html",
+        context={
+            "invoice": invoice,
+            "customer": invoice.customer,
+            "customer_address": invoice.address,
+            "products": [], #invoice.invoiceitem_set.all,
+        },
+    )
+
+
+@login_required
 def cart(request: HttpRequest) -> HttpResponse:
+    """
+    Show the current shopping cart
+    """
+
     customer = None
     customer_address = None
     products = None
 
     if cart_data := request.session.get(settings.SESSION_KEY_CART):
-        print(cart_data)
         if (customer_id := cart_data["customer_id"]) is not None:
             customer = customer_models.Customer.objects.prefetch_related(
                 "addresses"
@@ -88,6 +116,10 @@ def cart(request: HttpRequest) -> HttpResponse:
 @login_required
 @require_POST
 def set_customer_and_address(request: HttpRequest) -> HttpResponse:
+    """
+    Set the customer and address for the current cart
+    """
+
     form = forms.CustomerIdAndAddressForm(request.POST)
 
     if not form.is_valid():
@@ -107,6 +139,10 @@ def set_customer_and_address(request: HttpRequest) -> HttpResponse:
 def get_add_to_cart_form(
     request: HttpRequest, product_id: Optional[int] = None
 ) -> HttpResponse:
+    """
+    Return add to cart form
+    """
+
     product = warehouse_models.Product.objects.get(pk=product_id)
 
     return render_crispy_form(
@@ -128,6 +164,10 @@ def get_add_to_cart_form(
 @login_required
 @require_POST
 def add_to_cart(request: HttpRequest) -> HttpResponse:
+    """
+    Add a product to cart
+    """
+
     form = forms.AddToCartForm(request.POST)
 
     if not form.is_valid():

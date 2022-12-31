@@ -1,0 +1,81 @@
+{% extends 'shared/base.html' %}
+
+{% load i18n %}
+{% load bs_icons %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-fluid">
+    {% comment %} <div class="d-flex justify-content-between align-items-center mt-3">
+        <h1>{% bsicon 'cart' %} {% trans 'Cart' %}</h1>
+    </div> {% endcomment %}
+    <div class="mt-1">
+        <h2>{% trans 'Invoice data' %}</h2>
+        <div class="d-flex justify-content-between mb-3">
+            <div class="card w-100">
+                <div class="card-body">
+                    <div class="h5 card-title">
+                        {{ invoice.pk }} {{ invoice.created }} {{ invoice.modified }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-1">
+        <h2>{% trans 'Customer' %}</h2>
+        <div class="d-flex justify-content-between mb-3">
+        {% if customer %}
+            <div class="card w-100">
+                <div class="card-body">
+                    <div class="h5 card-title">
+                        {{ customer }}
+                    </div>
+                    <div class="card-text">
+                        {{ customer_address }}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div>{% trans 'No customer selected, yet' %}</div>
+            <a class="btn btn-outline-primary" title="{% trans 'Choose customer' %}" href="{% url 'billy_customer:index' %}">
+                {% bsicon 'plus' %}{% bsicon 'person' %}
+                <span class="visually-hidden"{% trans 'Choose customer' %}</span>
+            </a>
+        {% endif %}
+    </div>
+    <div>
+        <h2>{% trans 'Products' %}</h2>
+        <ul class="list-group mb-3">
+        {% for product in products %}
+            <li class="list-group-item">
+                <h3>{{ product.instance }}</h3>
+                <small>{{ product.instance.category }}</small>
+                <div class="mb-2">{{ product.instance.render_details }}</div>
+                {% crispy product.form %}
+            </li>
+        {% empty %}
+            <li class="list-group-item">{% trans 'No products to see here' %}</li>
+        {% endfor %}
+        </ul>
+        <div class="text-end">
+            <a class="btn btn-primary" href="{% url 'billy_warehouse:index' %}" title="{% trans 'Add more products' %}">
+                {% bsicon 'plus' %}
+                {% trans 'Add more products' %}
+            </a>
+        </div>
+    </div>
+    <div>
+        <h2>{% trans 'Actions' %}</h2>
+        <div class="d-flex justify-content-end gap-3">
+            <button class="btn btn-primary">
+                {% bsicon 'save' %}
+                {% trans 'Save' %}
+            </button>
+            <button class="btn btn-success">
+                {% bsicon 'printer' %}
+                {% trans 'Print' %}
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

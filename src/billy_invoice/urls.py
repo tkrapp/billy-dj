@@ -5,6 +5,7 @@ from . import apps, views
 app_name = apps.BillyInvoiceConfig.name
 urlpatterns = [
     path("", views.index, name="index"),
+    path("invoice/<int:invoice_pk>", views.show_invoice, name="show-invoice"),
     path("cart", views.cart, name="cart"),
     path(
         "set-customer-and-address",

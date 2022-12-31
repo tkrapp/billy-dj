@@ -147,7 +147,7 @@ def edit_product(request: HttpRequest, pk_product: int) -> HttpResponse:
             request.POST,
             form_id=form_id,
             product_details_id=product_details_id,
-            target_url=reverse_lazy("billy_warehouse:edit-product", args=[product.pk]),
+            target_url=reverse_lazy("billy_warehouse:edit-product", args=(product.pk,)),
             details_form_url=reverse_lazy("billy_warehouse:get-details-form-stub"),
         )
 
@@ -199,7 +199,7 @@ def edit_product(request: HttpRequest, pk_product: int) -> HttpResponse:
                 form_id=form_id,
                 product_details_id=product_details_id,
                 target_url=reverse_lazy(
-                    "billy_warehouse:edit-product", args=[product.pk]
+                    "billy_warehouse:edit-product", args=(product.pk,)
                 ),
                 details_form_url=reverse_lazy("billy_warehouse:get-details-form-stub"),
                 rendered_details_form=rendered_details_form,

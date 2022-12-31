@@ -1,10 +1,18 @@
+"""
+Command to update postal codes file
+"""
+
 from argparse import ArgumentTypeError
 from pathlib import Path
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
 from shared.helpers.postal_codes import generate_trie
 
+
 def existing_file(value: str) -> Path:
+    """
+    Argparse type to return a pathlib.Path object of an existing file.
+    """
     path = Path(value)
 
     if not path.exists():
@@ -14,11 +22,15 @@ def existing_file(value: str) -> Path:
 
     return path
 
+
 class Command(BaseCommand):
-    help = 'Closes the specified poll for voting'
+    """
+    Update postal codes command class
+    """
+    help = "Update postal codes file"
 
     def add_arguments(self, parser):
-        parser.add_argument("-i", '--input', type=existing_file, required=True)
+        parser.add_argument("-i", "--input", type=existing_file, required=True)
         parser.add_argument("-o", "--output", required=True)
 
     def handle(self, *args, **options):

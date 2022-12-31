@@ -1,24 +1,32 @@
-from typing import Any
+"""
+Forms for invoice module
+"""
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Div, Field, Layout
+from django import forms
 from django.urls import reverse_lazy
+from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy
 
 from billy_warehouse import models as warehouse_models
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Field
-from django import forms
-from django.utils.translation import gettext_lazy
-from django.utils.safestring import mark_safe
-
-
 from .conf import settings
 
 
 class CustomerIdAndAddressForm(forms.Form):
+    """
+    Form containing customer id and address id.
+    """
+
     customer_id = forms.IntegerField()
     customer_address_id = forms.IntegerField()
 
 
 class AddToCartForm(forms.Form):
+    """
+    Form to add a product to the current shopping cart.
+    """
+
     product = forms.ModelChoiceField(
         queryset=warehouse_models.Product.objects.visible()
     )
@@ -66,6 +74,10 @@ class AddToCartForm(forms.Form):
 
 
 class UpdateCartForm(AddToCartForm):
+    """
+    Update a product in the current shopping cart.
+    """
+
     product = forms.ModelChoiceField(
         queryset=warehouse_models.Product.objects.visible(),  # type: ignore
         widget=forms.HiddenInput(),

@@ -66,7 +66,7 @@ class Customer(HideableModel, TimeStampedModel):
         return self.full_name
 
     def get_absolute_url(self):
-        return reverse("billy_customer:details", kwargs={"pk": self.pk})
+        return reverse("billy_customer:details", args=(self.pk,))
 
     def update(self, data: Mapping[str, Any]) -> Customer:
         with transaction.atomic():

@@ -1,6 +1,6 @@
 import urllib.parse
 from itertools import groupby
-from typing import Optional, cast
+from typing import Optional
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -11,6 +11,7 @@ from django.shortcuts import render
 from django.urls.base import reverse_lazy
 from django.utils.translation import gettext_lazy
 from django.views.decorators.http import require_http_methods
+
 from shared.forms import PaginationForm, render_crispy_form
 from shared.helpers.htmx import get_htmx_details
 
@@ -93,8 +94,8 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def details(request: HttpRequest, pk: int) -> HttpResponse:
-    customer = Customer.objects.get(pk=pk)
+def details(request: HttpRequest, customer_pk: int) -> HttpResponse:
+    customer = Customer.objects.get(pk=customer_pk)
     search_form = get_search_form(request)
 
     return render(
@@ -109,11 +110,9 @@ def details(request: HttpRequest, pk: int) -> HttpResponse:
 
 
 @login_required
-def edit_customer_data(request: HttpRequest, pk: int) -> HttpResponse:
-    customer: Customer = Customer.objects.get(pk=pk)
-    target_url = reverse_lazy(
-        "billy_customer:edit-customer-data", kwargs={"pk": customer.pk}
-    )
+def edit_customer_data(request: HttpRequest, customer_pk: int) -> HttpResponse:
+    customer: Customer = Customer.objects.get(pk=customer_pk)
+    target_url = reverse_lazy("billy_customer:edit-customer-data", args=(customer.pk,))
     edit_form = CustomerForm(instance=customer, target_url=target_url)
 
     if request.method == "POST":
@@ -133,14 +132,16 @@ def edit_customer_data(request: HttpRequest, pk: int) -> HttpResponse:
 
 
 @login_required
-def edit_address(request: HttpRequest, pk: int, address_pk: int) -> HttpResponse:
+def edit_address(
+    request: HttpRequest, customer_pk: int, address_pk: int
+) -> HttpResponse:
     form_id = "add-edit-address"
-    customer = Customer.objects.get(pk=pk)
+    customer = Customer.objects.get(pk=customer_pk)
 
     try:
         address: Address = customer.addresses.get(pk=address_pk)
-    except Address.DoesNotExist:
-        raise Http404(gettext_lazy("Could not find a matching address"))
+    except Address.DoesNotExist as exc:
+        raise Http404(gettext_lazy("Could not find a matching address")) from exc
 
     if request.method == "POST":
         address_form = AddressForm(
@@ -207,10 +208,10 @@ def edit_address(request: HttpRequest, pk: int, address_pk: int) -> HttpResponse
 
 
 @login_required
-def add_address(request: HttpRequest, pk: int) -> HttpResponse:
+def add_address(request: HttpRequest, customer_pk: int) -> HttpResponse:
     form_id = "add-edit-address"
     if request.method == "POST":
-        customer = Customer.objects.get(pk=pk)
+        customer = Customer.objects.get(pk=customer_pk)
         address_form = AddressForm(
             request.POST,
             target_url=request.path,
@@ -279,8 +280,7 @@ def add_customer(request: HttpRequest) -> HttpResponse:
                 status=201,
                 headers={
                     "HX-Redirect": reverse_lazy(
-                        "billy_customer:details",
-                        kwargs={"pk": customer_form.instance.pk},
+                        "billy_customer:details", args=(customer_form.instance.pk,)
                     ),
                 },
             )
@@ -295,8 +295,10 @@ def add_customer(request: HttpRequest) -> HttpResponse:
 
 @login_required
 @require_http_methods(["DELETE"])
-def remove_address(request: HttpRequest, pk: int, address_pk: int) -> HttpResponse:
-    customer = Customer.objects.get(pk=pk)
+def remove_address(
+    request: HttpRequest, customer_pk: int, address_pk: int
+) -> HttpResponse:
+    customer = Customer.objects.get(pk=customer_pk)
     customer_address_relation = CustomerAddress.objects.get(
         customer=customer, address_id=address_pk
     )
