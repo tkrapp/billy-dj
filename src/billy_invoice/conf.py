@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 import typed_app_settings
 
 
